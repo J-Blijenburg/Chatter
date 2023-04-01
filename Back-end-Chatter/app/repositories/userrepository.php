@@ -12,7 +12,7 @@ class UserRepository extends Repository
     {
         try {
             // retrieve the user with the given username
-            $stmt = $this->connection->prepare("SELECT id, username, password, email FROM user WHERE username = :username");
+            $stmt = $this->connection->prepare("SELECT id, username, password, email FROM users WHERE username = :username");
             $stmt->bindParam(':username', $username);
             $stmt->execute();
 
@@ -43,6 +43,10 @@ class UserRepository extends Repository
     // verify the password hash
     function verifyPassword($input, $hash)
     {
-        return password_verify($input, $hash);
+        if($input == $hash){
+            return true;
+        }
+        return false;
+        // return password_verify($input, $hash);
     }
 }
