@@ -37,3 +37,14 @@
 .registerPart button{
     width: 100%;
 }
+
+.btnRegister{
+    margin-top: 10%;
+    background-color: lightgreen;
+    border: 2.5px solid black;
+    border-radius: 20px;
+}
+
+.btnRegister:hover{
+    background-color: rgb(2, 145, 2);
+}

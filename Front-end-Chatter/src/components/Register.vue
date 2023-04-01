@@ -16,7 +16,7 @@
                   <input v-model="password" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirm Password" />
               </div>
              
-              <button type='button' class="btn btn-primary">Submit</button>
+              <button type='button' class="btnRegister">Submit</button>
           </form>
       </div>
   </div>
