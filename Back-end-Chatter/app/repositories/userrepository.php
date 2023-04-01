@@ -35,20 +35,12 @@ class UserRepository extends Repository
         }
     }
 
-    // hash the password (currently uses bcrypt)
-    function hashPassword($password)
-    {
-        return password_hash($password, PASSWORD_DEFAULT);
-    }
+    
 
     // verify the password hash
     function verifyPassword($input, $hash)
     {
-        if($input == $hash){
-            return true;
-        }
-        return false;
-        // return password_verify($input, $hash);
+        return password_verify($input, $hash);
     }
 
     function insert($user)
@@ -56,7 +48,7 @@ class UserRepository extends Repository
         try {
             $stmt = $this->connection->prepare("INSERT into users (username, password, email) VALUES (?,?,?)");
 
-            $stmt->execute([$user->username, $user->password, $user->email]);
+            $stmt->execute([$user->username, $this->hashPassword($user->password), $user->email]);
 
             $user->id = $this->connection->lastInsertId();
 
@@ -64,6 +56,12 @@ class UserRepository extends Repository
         } catch (PDOException $e) {
             echo $e;
         }
+    }
+
+    // hash the password (currently uses bcrypt)
+    function hashPassword($password)
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
     }
     function getOne($id)
     {
