@@ -16,6 +16,18 @@ class UserController extends Controller
         $this->service = new UserService();
     }
 
+    public function create(){
+        try {
+            $user = $this->createObjectFromPostedJson("Models\\User");
+            $user = $this->service->insert($user);
+
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+
+        $this->respond($user);
+    }
+
     public function login() {
 
         // read user data from request body

@@ -5,6 +5,7 @@ namespace Repositories;
 use PDO;
 use PDOException;
 use Repositories\Repository;
+use Models\User;
 
 class UserRepository extends Repository
 {
@@ -48,5 +49,46 @@ class UserRepository extends Repository
         }
         return false;
         // return password_verify($input, $hash);
+    }
+
+    function insert($user)
+    {
+        try {
+            $stmt = $this->connection->prepare("INSERT into users (username, password, email) VALUES (?,?,?,?,?)");
+
+            $stmt->execute([$user->username, $user->password, $user->email]);
+
+            $user->id = $this->connection->lastInsertId();
+
+            return $this->getOne($user->id);
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+    function getOne($id)
+    {
+        try {
+            $query = "SELECT id, username, password, email FROM users WHERE id = :id";
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $row = $stmt->fetch();
+            $user = $this->rowToUser($row);
+
+            return $user;
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
+    function rowToUser($row) {
+        $user = new User();
+        $user->id = $row['id'];
+        $user->username = $row['username'];
+        $user->password = $row['password'];
+        $user->email = $row['email'];
+        return $user;
     }
 }
