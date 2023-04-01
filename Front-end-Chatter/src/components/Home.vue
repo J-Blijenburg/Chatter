@@ -1,30 +1,21 @@
 <template>
-  <Navigation />
-  <div class="homeStructure">
-
-    <div class="homeTitle">
-      <h1>Welcome To Chatter!</h1>
-    </div>
-    <div class="homeButtons">
-      <button @click="login()" class="btnLoginRegister">Login</button>
-      <button @click="register()" class="btnLoginRegister">Register</button>
-      <!-- <p>Chatter is a social media platform that allows you to connect with your friends and family.</p> -->
-    </div>
-  </div>
+  
+   <div>
+      <h2>dsdsaadasdsadasdsadsadas</h2>
+   <h1>dit is een test</h1>
+   <h2>ddsa</h2>
+   <button>dsadsadas</button>
+   <div>
+      <h2>dsdsaadasdsadasdsadsadas</h2>
+   </div>
+   <h2>dsa</h2>
+   </div>
 </template>
-
+  
 <script>
-  export default {
-    name: "Home",
-    methods: {
-      login() {
-        this.$router.push("/login");
-      },
-      register() {
-        this.$router.push("/register");
-      },
-    },
-  };
+   export default {
+      
+   }
 </script>
-
+  
 <style></style>

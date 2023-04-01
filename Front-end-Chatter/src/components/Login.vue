@@ -29,6 +29,7 @@ export default {
                 .then((res) => {
                     console.log(res);
                     alert(res.data.username + " has logged in!");
+                    this.$router.push("/home");
                 })
                 .catch((error) => console.log(error));
         },
