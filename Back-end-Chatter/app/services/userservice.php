@@ -19,6 +19,14 @@ class UserService {
     public function insert($item) {       
         return $this->repository->insert($item);        
     }
+
+    public function getAll($offset = NULL, $limit = NULL) {
+        return $this->repository->getAll($offset, $limit);
+    }
+
+    public function getOne($id) {
+        return $this->repository->getOne($id);
+    }
 }
 
 ?>

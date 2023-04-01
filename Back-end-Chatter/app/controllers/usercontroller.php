@@ -83,5 +83,54 @@ class UserController extends Controller
                 "username" => $user->username,
                 "expireAt" => $expire
             );
-    }    
+    }  
+    
+    //get all the users there are
+    public function getAll()
+    {
+         // Checks for a valid jwt, returns 401 if none is found
+         $token = $this->checkForJwt();
+         if (!$token)
+             return;
+ 
+         $offset = NULL;
+         $limit = NULL;
+      
+
+        if (isset($_GET["offset"]) && is_numeric($_GET["offset"])) {
+            $offset = $_GET["offset"];
+        }
+        if (isset($_GET["limit"]) && is_numeric($_GET["limit"])) {
+            $limit = $_GET["limit"];
+        }
+
+        $users = $this->service->getAll($offset, $limit);
+
+        $this->respond($users);
+    }
+
+    //get a single user
+    public function getOne($id)
+    {
+        $user = $this->service->getOne($id);
+
+        // we might need some kind of error checking that returns a 404 if the product is not found in the DB
+        if (!$user) {
+            $this->respondWithError(404, "User not found");
+            return;
+        }
+
+        $this->respond($user);
+    }
+
+    public function getUserIdFromJwt() {
+        $decoded = $this->checkForJwt();
+    
+        return 
+        array(
+            "message" => "testtest.",
+            "jwt" => $decoded->data->id,
+            "username" => $decoded->data->username,
+        );
+    }
 }

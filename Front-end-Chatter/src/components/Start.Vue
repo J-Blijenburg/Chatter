@@ -26,13 +26,15 @@
         </div>
       </div>
       <div class="startLogOut">
-        <button class="startBtnLogOut">Log out</button>
+        <button  class="startBtnLogOut">Log out</button>
       </div>
     </div>
 
 
     <div class="startBase">
-
+      <div class="startProfile">
+        <!-- <h1>Welcome, {{ user.username }}</h1> -->
+      </div>
     </div>
   </div>
 </template>

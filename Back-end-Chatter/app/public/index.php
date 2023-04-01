@@ -17,6 +17,8 @@ $router->setNamespace('Controllers');
 // routes for the users endpoint
 $router->post('/users/login', 'UserController@login');
 $router->post('/users/register', 'UserController@create');
+// $router->get('/users', 'UserController@getAll');
+$router->get('/users', 'UserController@getUserIdFromJwt');
 
 // Run it!
 $router->run();

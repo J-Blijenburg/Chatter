@@ -12,7 +12,7 @@
     width: 80%;
     height: 90%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     border-radius: 0px 25px 25px 0px;
     opacity: 97%;
 }
@@ -53,9 +53,15 @@
     justify-content: center;
     width: 100%;
     border-radius: 20px;
-    background-color: lightgreen;
+    background-color: lightcoral;
 }
 
 .startBtnLogOut:hover{
-    background-color: rgb(2, 145, 2);
+    background-color: rgb(201, 39, 39);
+}
+
+.startProfile{
+    background-color: lightyellow;
+    height: 100%;
+    margin: 2.5%;
 }

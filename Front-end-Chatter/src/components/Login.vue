@@ -19,6 +19,8 @@
   
 <script>
 import axios from 'axios';
+
+
 export default {
     methods: {
         login() {
@@ -28,7 +30,9 @@ export default {
             })
                 .then((res) => {
                     console.log(res);
-                    alert(res.data.username + " has logged in!");
+                    localStorage.clear();
+                    localStorage.setItem("token", res.data.jwt);
+                    axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.jwt;
                     this.$router.push("/start");
                 })
                 .catch((error) => console.log(error));

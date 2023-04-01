@@ -89,4 +89,31 @@ class UserRepository extends Repository
         $user->email = $row['email'];
         return $user;
     }
+
+    function getAll($offset = NULL, $limit = NULL)
+    {
+        try {
+            $query = "SELECT * FROM users";
+            if (isset($limit) && isset($offset)) {
+                $query .= " LIMIT :limit OFFSET :offset ";
+            }
+            $stmt = $this->connection->prepare($query);
+            if (isset($limit) && isset($offset)) {
+                $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+                $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            }
+            $stmt->execute();
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\user');
+            $users = $stmt->fetchAll();
+
+            return $users;
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
+    
+
+    
 }
