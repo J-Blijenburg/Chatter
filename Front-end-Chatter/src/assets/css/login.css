@@ -1,0 +1,42 @@
+.loginStructure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../images/HomePage.jpg');
+    flex-direction: column;
+}
+
+.login{
+    background-color: white;
+    padding: 5%;
+    padding-top: 2.5%;
+    padding-bottom: 2.5%;
+
+    border-radius: 25px;
+    opacity: 97%;
+    border: 2.5px solid black;
+}
+
+.login h1{
+    display: flex;
+    justify-content: center;
+}
+
+.loginPart{
+    padding-top: 10%;
+}
+
+.loginPart label{
+    display: flex;
+    justify-content: center;
+}
+
+.loginPart input{
+    text-align: center;
+}
+
+
+.loginPart button{
+    width: 100%;
+}
