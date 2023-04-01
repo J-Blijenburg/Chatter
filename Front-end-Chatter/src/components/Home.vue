@@ -16,7 +16,7 @@
 </template>
 
 <script>
-test
+
 </script>
 
 <style></style>
