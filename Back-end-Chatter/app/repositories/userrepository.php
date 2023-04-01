@@ -54,7 +54,7 @@ class UserRepository extends Repository
     function insert($user)
     {
         try {
-            $stmt = $this->connection->prepare("INSERT into users (username, password, email) VALUES (?,?,?,?,?)");
+            $stmt = $this->connection->prepare("INSERT into users (username, password, email) VALUES (?,?,?)");
 
             $stmt->execute([$user->username, $user->password, $user->email]);
 

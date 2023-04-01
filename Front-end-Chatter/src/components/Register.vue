@@ -12,18 +12,33 @@
               <div class="mb-3">
                   <input v-model="password" type="password" class="form-control" id="inputPassword" placeholder="Password" />
               </div>
-              <div class="mb-3">
-                  <input v-model="password" type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirm Password" />
-              </div>
+              
              
-              <button type='button' class="btnRegister">Submit</button>
+              <button @click="register()" type='button' class="btnRegister">Submit</button>
           </form>
       </div>
   </div>
 </template>
 
 <script>
-
+import axios from 'axios';
+export default {
+    methods: {
+        register() {
+            axios.post("http://localhost/users/register", {
+                username: this.username,
+                email: this.email,
+                password: this.password,
+            })
+                .then((res) => {
+                    console.log(res);
+                    alert(res.data.username + " has registered!");
+                    this.$router.push("/");
+                })
+                .catch((error) => console.log(error));
+        },
+    }
+}
 </script>
 
 <style>
