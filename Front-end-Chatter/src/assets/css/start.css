@@ -43,6 +43,10 @@
     display: flex;
     justify-content: center;
 }
+.startNavigationIconsName{
+    display: flex;
+    justify-content: center;
+}
 
 .startLogOut{
     width: 90%;

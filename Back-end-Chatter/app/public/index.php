@@ -17,10 +17,10 @@ $router->setNamespace('Controllers');
 // routes for the users endpoint
 $router->post('/users/login', 'UserController@login');
 $router->post('/users/register', 'UserController@create');
-
-
-
 $router->get('/users/getOneUser', 'UserController@getOneUser');
+
+// routes for the friends endpoint
+$router->get('/friends/getFriendsByUserId/(\d+)', 'FriendsController@getFriendsByUserId');
 
 // Run it!
 $router->run();
