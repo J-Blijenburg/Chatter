@@ -1,5 +1,42 @@
-.baseHeader{
-    background-color: lightyellow;
-    height: 100%;
+.baseAddFriendsHeader {
+    height: 5%;
     margin: 2.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.baseAddFriendsBody {
+    height: 40%;
+    margin: 2.5%;
+    display: flex;
+}
+
+
+
+
+.addUser {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    margin: 5%;
+    border: 1px black solid;
+    flex-direction: column;
+    gap: 10%;
+    align-items: center;
+}
+.addFriendTitle{
+    padding-top: 5%;
+    display: flex;
+    justify-content:center;
+}
+
+#addFriendInputField{
+    display: flex;
+    align-content: center;
+    width: 90%;
+}
+.btnRandomUser{
+    display: flex;
+    justify-content: center;
 }
