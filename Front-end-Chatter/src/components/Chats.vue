@@ -20,28 +20,29 @@
                         <div class="col-md-9">
                             <div class="row">
                                 <div id="chat" class="col-md-12">
-                                    <div class="scrollbar" >
+                                    <div class="scrollbar" ref="chatBox">
                                         <div class="chat-box" v-for="msg in message" :key="msg.id">
                                             <div v-if="msg.fromUser !== activeUser" class="chat-message-User">
                                                 <div class="message">
-                                                        {{ msg.textMessage }}
+                                                    {{ msg.textMessage }}
 
-                                                    </div>
+                                                </div>
                                             </div>
                                             <div v-else class="chat-message-Friend">
                                                 <p>
-                                                    <div class="message">
-                                                        {{ msg.textMessage }}
+                                                <div class="message">
+                                                    {{ msg.textMessage }}
 
-                                                    </div>
+                                                </div>
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                     <form>
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" placeholder="Enter text message...">
-                                            <button @click="sendMessage()" class="btn btn-primary" type="button" id="button-addon2">Send</button>
+                                            <input @keydown.enter.prevent="sendMessage()" type="text" class="form-control" placeholder="Enter text message...">
+                                            <button @click="sendMessage()" class="btn btn-primary" type="button"
+                                                id="button-addon2">Send</button>
                                         </div>
                                     </form>
                                 </div>
@@ -89,10 +90,13 @@ export default {
                 .then((res) => {
                     console.log(res.data);
                     this.message = res.data;
+                    this.$nextTick(() => {
+                        this.$refs.chatBox.scrollTop = this.$refs.chatBox.scrollHeight;
+                    });
                 })
                 .catch((error) => console.log(error));
         },
-        sendMessage(){
+        sendMessage() {
             axios.post("http://localhost/messages/createMessage", {
                 fromUser: localStorage.getItem("userId"),
                 toUser: this.activeUser,
@@ -103,6 +107,9 @@ export default {
                     console.log(res);
                     document.querySelector("input").value = "";
                     this.getChatWithFriend();
+                    this.$nextTick(() => {
+                        this.$refs.chatBox.scrollTop = this.$refs.chatBox.scrollHeight;
+                    });
                 })
                 .catch((error) => console.log(error));
         }
