@@ -6,6 +6,7 @@ class Friends {
     public int $id;
     public int $firstUser;
     public int $secondUser;
+    public int $activeChat;
 }
 
 ?>

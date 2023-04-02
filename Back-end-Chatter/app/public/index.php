@@ -23,6 +23,8 @@ $router->get('/users/getOneUser', 'UserController@getOneUser');
 $router->get('/friends/getFriendsByUserId/(\d+)', 'FriendsController@getFriendsByUserId');
 $router->get('/friends/getChatFriendsByUserId/(\d+)', 'FriendsController@getChatFriendsByUserId');
 $router->put('/friends/startChat/(\d+)/(\d+)', 'FriendsController@updateFriendsChatStatus');
+$router->post('/friends/addFriend', 'FriendsController@addFriend');
+$router->post('/friends/addRandomUser', 'FriendsController@addRandomUser');
 
 //routes for the messages endpoint
 $router->get('/messages/getMessagesById/(\d+)/(\d+)', 'MessageController@getMessagesById');

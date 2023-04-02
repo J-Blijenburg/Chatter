@@ -3,7 +3,8 @@ namespace Services;
 
 use Repositories\FriendsRepository;
 
-class FriendsService {
+class FriendsService
+{
 
     private $repository;
 
@@ -12,16 +13,29 @@ class FriendsService {
         $this->repository = new FriendsRepository();
     }
 
-    public function getFriendsByUserId($id) {
+    public function getFriendsByUserId($id)
+    {
         return $this->repository->getFriendsByUserId($id);
     }
 
-    public function getChatFriendsByUserId($id) {
+    public function getChatFriendsByUserId($id)
+    {
         return $this->repository->getChatFriendsByUserId($id);
     }
 
-    public function update($firstUser, $secondUser){
+    public function update($firstUser, $secondUser)
+    {
         return $this->repository->update($firstUser, $secondUser);
+    }
+
+    public function insert($friends)
+    {
+        return $this->repository->insert($friends);
+    }
+
+    public function insertRandomFriendship($friendship)
+    {
+        $this->repository->insertRandomFriendship($friendship);
     }
 }
 

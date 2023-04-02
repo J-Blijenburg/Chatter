@@ -45,4 +45,27 @@ class friendsController extends Controller
         }
         
     }
+
+    public function addFriend(){
+        try {
+            $friends = $this->createObjectFromPostedJson("Models\\Friends");
+            $friends = $this->service->insert($friends);
+
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+
+        $this->respond($friends);
+
+    }
+
+    public function addRandomUser(){
+        try {
+            $friendship = $this->createObjectFromPostedJson("Models\\Friends");
+            $this->service->insertRandomFriendship($friendship);
+
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+    }
 }
