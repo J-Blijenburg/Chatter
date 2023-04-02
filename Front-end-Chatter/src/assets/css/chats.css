@@ -1,5 +1,41 @@
-.baseHeader{
-    background-color: lightyellow;
-    height: 100%;
+.baseChatsHeader{
+    height: 10%;
     margin: 2.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.baseChatsBody{
+    height: 80%;
+    margin: 2.5%;
+}
+.row{
+    height: 100%;
+    
+}
+
+
+#chat{
+    border-left: 5px black solid;
+    background-color: lightgrey;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+#chatContacts{
+    background-color: lightgrey;
+    padding: 1%;
+}
+
+.chat-box{
+    height: 85%;
+    margin-top: 2.5%;
+    background-color: white;
+}
+
+.chat-message{
+    margin-left: 2.5%;
+    margin-top: 2.5%;
 }

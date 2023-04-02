@@ -26,4 +26,14 @@ class friendsController extends Controller
 
         $this->respond($friends);
     }
+
+    public function getChatFriendsByUserId($id){
+        try {
+            $friends = $this->service->getChatFriendsByUserId($id);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+
+        $this->respond($friends);
+    }
 }

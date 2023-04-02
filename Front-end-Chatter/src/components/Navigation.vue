@@ -68,7 +68,7 @@
     methods: {
       logout() {
         localStorage.clear();
-        this.$router.push("/main");
+        this.$router.push("/");
       }
     },
   };

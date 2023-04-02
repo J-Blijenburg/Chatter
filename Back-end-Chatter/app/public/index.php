@@ -21,6 +21,7 @@ $router->get('/users/getOneUser', 'UserController@getOneUser');
 
 // routes for the friends endpoint
 $router->get('/friends/getFriendsByUserId/(\d+)', 'FriendsController@getFriendsByUserId');
+$router->get('/friends/getChatFriendsByUserId/(\d+)', 'FriendsController@getChatFriendsByUserId');
 
 // Run it!
 $router->run();

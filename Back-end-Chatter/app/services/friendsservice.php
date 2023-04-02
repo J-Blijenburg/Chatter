@@ -15,6 +15,10 @@ class FriendsService {
     public function getFriendsByUserId($id) {
         return $this->repository->getFriendsByUserId($id);
     }
+
+    public function getChatFriendsByUserId($id) {
+        return $this->repository->getChatFriendsByUserId($id);
+    }
 }
 
 ?>

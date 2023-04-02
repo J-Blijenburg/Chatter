@@ -34,7 +34,7 @@ export default {
         };
     },
     mounted() {
-        this.getFriends(6);
+        this.getFriends(localStorage.getItem("userId"));
     },
     methods: {
         getFriends(id) {
