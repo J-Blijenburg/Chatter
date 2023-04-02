@@ -3,7 +3,7 @@
         <Navigation />
         <div class="base">
             <div class="baseAddFriendsHeader">
-                <h1>Add Friends</h1>
+                <h1>Add User</h1>
             </div>
             <div class="baseAddFriendsBody">
                 <div class="addUser">
