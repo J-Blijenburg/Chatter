@@ -1,0 +1,28 @@
+.baseFriendsHeader {
+    height: 10%;
+    margin: 2.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.baseFriendsBody {
+    height: 80%;
+    margin: 2.5%;
+}
+
+#friendsList {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+#friendsListItems{
+    display: flex;
+    justify-content: center;
+}
+
+#singleFriendList{
+    display: flex;
+    justify-content: space-between;
+}
