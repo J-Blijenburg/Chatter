@@ -20,7 +20,7 @@
                         <div class="col-md-9">
                             <div class="row">
                                 <div id="chat" class="col-md-12">
-                                    <div>
+                                    <div class="scrollbar">
                                         <div class="chat-box" v-for="msg in message" :key="msg.id">
                                             <div v-if="msg.fromUser === 6" class="chat-message-User">
                                                 <div class="message">
