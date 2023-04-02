@@ -16,7 +16,8 @@ class UserController extends Controller
         $this->service = new UserService();
     }
 
-    public function create(){
+    public function create()
+    {
         try {
             $user = $this->createObjectFromPostedJson("Models\\User");
             $user = $this->service->insert($user);
@@ -28,7 +29,8 @@ class UserController extends Controller
         $this->respond($user);
     }
 
-    public function login() {
+    public function login()
+    {
 
         // read user data from request body
         $postedUser = $this->createObjectFromPostedJson("Models\\User");
@@ -37,18 +39,19 @@ class UserController extends Controller
         $user = $this->service->checkUsernamePassword($postedUser->username, $postedUser->password);
 
         // if the method returned false, the username and/or password were incorrect
-        if(!$user) {
+        if (!$user) {
             $this->respondWithError(401, "Invalid login");
             return;
         }
 
         // generate jwt
-        $tokenResponse = $this->generateJwt($user);       
+        $tokenResponse = $this->generateJwt($user);
 
-        $this->respond($tokenResponse);    
+        $this->respond($tokenResponse);
     }
 
-    public function generateJwt($user) {
+    public function generateJwt($user)
+    {
         $secret_key = "YOUR_SECRET_KEY";
 
         $issuer = "THE_ISSUER"; // this can be the domain/servername that issues the token
@@ -72,30 +75,31 @@ class UserController extends Controller
                 "id" => $user->id,
                 "username" => $user->username,
                 "email" => $user->email
-        ));
+            )
+        );
 
         $jwt = JWT::encode($payload, $secret_key, 'HS256');
 
-        return 
+        return
             array(
                 "message" => "Successful login.",
                 "jwt" => $jwt,
                 "username" => $user->username,
                 "expireAt" => $expire
             );
-    }  
-    
+    }
+
     //get all the users there are
     public function getAll()
     {
-         // Checks for a valid jwt, returns 401 if none is found
-         $token = $this->checkForJwt();
-         if (!$token)
-             return;
- 
-         $offset = NULL;
-         $limit = NULL;
-      
+        // Checks for a valid jwt, returns 401 if none is found
+        $token = $this->checkForJwt();
+        if (!$token)
+            return;
+
+        $offset = NULL;
+        $limit = NULL;
+
 
         if (isset($_GET["offset"]) && is_numeric($_GET["offset"])) {
             $offset = $_GET["offset"];
@@ -123,14 +127,25 @@ class UserController extends Controller
         $this->respond($user);
     }
 
-    public function getUserIdFromJwt() {
-        $decoded = $this->checkForJwt();
-    
-        return 
-        array(
-            "message" => "testtest.",
-            "jwt" => $decoded->data->id,
-            "username" => $decoded->data->username,
+
+
+    public function getOneUser()
+    {
+        // Checks for a valid jwt, returns 401 if none is found
+        $token = $this->checkForJwt();
+        if (!$token)
+            return;
+
+        // Extract and return the values from the decoded JWT token
+        $jwtValues = $token->data;
+
+        // Get the user with the id from the JWT
+        $user = $this->service->getOne($jwtValues->id);
+
+        // Merge the JWT values with the user data and send the response
+        $response = array(
+            "data" => $user
         );
+        $this->respond($response);
     }
 }

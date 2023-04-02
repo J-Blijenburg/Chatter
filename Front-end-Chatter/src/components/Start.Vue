@@ -26,21 +26,53 @@
         </div>
       </div>
       <div class="startLogOut">
-        <button  class="startBtnLogOut">Log out</button>
+        <button class="startBtnLogOut">Log out</button>
       </div>
     </div>
 
 
     <div class="startBase">
       <div class="startProfile">
-        <!-- <h1>Welcome, {{ user.username }}</h1> -->
+        <h1>Welcome, {{ user.username }}</h1>
       </div>
     </div>
   </div>
 </template>
   
 <script>
+import axios from 'axios';
 
+export default {
+  data() {
+    return {
+      user: {
+        username: "",
+        email: "",
+        id: "",
+      }
+    }
+  },
+  mounted() {
+    this.getOneUser();
+  },
+  methods: {
+    getOneUser() {
+      axios.get("http://localhost/users/getOneUser", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          this.user.username = res.data.data.username;
+          this.user.email = res.data.data.email;
+          this.user.id = res.data.data.id;
+        })
+        .catch((error) => console.log(error));
+    },
+  }
+
+}
 </script>
   
 <style>
