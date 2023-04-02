@@ -43,5 +43,17 @@ class FriendsRepository extends Repository
         }
     }
 
+    public function update($firstUser, $secondUser){
+        try{
+            $stmt = $this->connection->prepare("UPDATE friends SET activeChat = 1 WHERE (firstUser = :firstUser AND secondUser = :secondUser) OR (firstUser = :secondUser AND secondUser = :firstUser)");
+            $stmt->bindParam(':firstUser', $firstUser);
+            $stmt->bindParam(':secondUser', $secondUser);
+            $stmt->execute();
+
+        }catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
     
 }

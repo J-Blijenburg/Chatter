@@ -6,11 +6,11 @@
                 <h1>Friends</h1>
             </div>
             <div class="baseFriendsBody">
-                <div  id="friendsListItems" v-if="users.length > 0">
+                <div id="friendsListItems" v-if="users.length > 0">
                     <ul class="list-group" id="friendsList">
                         <li id="singleFriendList" class="list-group-item" v-for="user in users" :key="user.id">
                             {{ user.username }}
-                            <button class="btn btn-primary btn-sm float-right">Chat</button>
+                            <button @click="StartChat(user.id)" class="btn btn-primary btn-sm float-right">Chat</button>
                         </li>
                     </ul>
                 </div>
@@ -41,6 +41,15 @@ export default {
             axios.get("http://localhost/friends/getFriendsByUserId/" + id)
                 .then((res) => {
                     this.users = res.data;
+                })
+                .catch((error) => console.log(error));
+        },
+        StartChat(friendId) {
+            axios.put("http://localhost/friends/startChat/" + localStorage.getItem("userId") + "/" + friendId)
+                .then((res) => {
+
+                    $this.push({ path: '/chats' });
+        
                 })
                 .catch((error) => console.log(error));
         },

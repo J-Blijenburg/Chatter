@@ -36,4 +36,13 @@ class friendsController extends Controller
 
         $this->respond($friends);
     }
+
+    public function updateFriendsChatStatus($firstUser, $secondUser){
+        try{
+            $this->service->update($firstUser, $secondUser);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+        
+    }
 }

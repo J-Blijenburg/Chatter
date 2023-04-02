@@ -22,6 +22,7 @@ $router->get('/users/getOneUser', 'UserController@getOneUser');
 // routes for the friends endpoint
 $router->get('/friends/getFriendsByUserId/(\d+)', 'FriendsController@getFriendsByUserId');
 $router->get('/friends/getChatFriendsByUserId/(\d+)', 'FriendsController@getChatFriendsByUserId');
+$router->put('/friends/startChat/(\d+)/(\d+)', 'FriendsController@updateFriendsChatStatus');
 
 //routes for the messages endpoint
 $router->get('/messages/getMessagesById/(\d+)/(\d+)', 'MessageController@getMessagesById');
