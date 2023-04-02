@@ -10,14 +10,20 @@ use Models\Message;
 class MessageRepository extends Repository
 {
     public function getMessagesById($currentUserId, $friendId) {
-        $sql = "SELECT * FROM messages WHERE (from_user_id = :currentUserId AND to_user_id = :friendId) OR (from_user_id = :friendId AND to_user_id = :currentUserId) ORDER BY send_at ASC";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':currentUserId', $currentUserId);
-        $stmt->bindParam(':friendId', $friendId);
-        $stmt->execute();
-        $messages = $stmt->fetchAll(PDO::FETCH_CLASS, Message::class);
-        return $messages;
+        try {
+            $stmt = $this->connection->prepare("SELECT fromUser, textMessage FROM messages WHERE (fromUser = :currentUserId AND toUser = :friendId) OR (fromUser = :friendId AND toUser = :currentUserId)");
+            $stmt->bindParam(':currentUserId', $currentUserId);
+            $stmt->bindParam(':friendId', $friendId);
+            $stmt->execute();
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Message');
+            $messages = $stmt->fetchAll();
+            return $messages;
+        } catch (PDOException $e) {
+            echo $e;
+        }
     }
 
+   
     
 }

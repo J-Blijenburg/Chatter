@@ -11,9 +11,8 @@
                         <div id="chatContacts" class="col-md-3">
                             <ul class="list-group">
                                 <li class="list-group-item" v-for="user in users" :key="user.id"
-                                    :class="{ 'active': activeUser === user.username, 'hover': hoveredUser === user.username }"
-                                    @click="activeUser = user.username" @mouseover="hoveredUser = user.username"
-                                    @mouseout="hoveredUser = ''">
+                                    :class="{ 'active': activeUser === user.id }"
+                                    @click="activeUser = user.id, getChatWithFriend()">
                                     {{ user.username }}
                                 </li>
                             </ul>
@@ -21,26 +20,25 @@
                         <div class="col-md-9">
                             <div class="row">
                                 <div id="chat" class="col-md-12">
-                                    <div class="chat-box">
-                                        <div class="chat-message">
-                                            <p>John: Hi, how are you?</p>
-                                        </div>
-                                        <div class="chat-message">
-                                            <p>You: I'm good, thanks for asking.</p>
-                                        </div>
-                                        <div class="chat-message">
-                                            <p>John: That's great to hear.</p>
-                                        </div>
-                                        <div class="chat-message">
-                                            <p>John: Did you finish the project?</p>
-                                        </div>
-                                        <div class="chat-message">
-                                            <p>You: Yes, I did. How about you?</p>
-                                        </div>
-                                        <div class="chat-message">
-                                            <p>John: Not yet, I still have a few things to do.</p>
+                                    <div>
+                                        <div class="chat-box" v-for="msg in message" :key="msg.id">
+                                            <div v-if="msg.fromUser === 6" class="chat-message-User">
+                                                <div class="message">
+                                                        {{ msg.textMessage }}
+
+                                                    </div>
+                                            </div>
+                                            <div v-else class="chat-message-Friend">
+                                                <p>
+                                                    <div class="message">
+                                                        {{ msg.textMessage }}
+
+                                                    </div>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
+
 
 
                                     <form>
@@ -73,6 +71,7 @@ export default {
     data() {
         return {
             users: [],
+            message: [],
             activeUser: '',
             hoveredUser: ''
         }
@@ -88,6 +87,14 @@ export default {
                 })
                 .catch((error) => console.log(error));
         },
+        getChatWithFriend() {
+            axios.get("http://localhost//messages/getMessagesById/" + localStorage.getItem("userId") + "/" + this.activeUser)
+                .then((res) => {
+                    console.log(res.data);
+                    this.message = res.data;
+                })
+                .catch((error) => console.log(error));
+        }
     }
 
 

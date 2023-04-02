@@ -4,10 +4,9 @@ namespace Models;
 class Message {
 
     public int $id;
-    public User $fromUser;
-    public User $toUser;
-    public string $txtMessage;
-
+    public int $fromUser;
+    public int $toUser;
+    public string $textMessage;
     public string $sendAt;
 
 }
