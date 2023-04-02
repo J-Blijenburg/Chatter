@@ -3,7 +3,7 @@ namespace Services;
 
 use Repositories\MessageRepository;
 
-class FriendsService {
+class MessageService {
 
     private $repository;
 
@@ -12,6 +12,9 @@ class FriendsService {
         $this->repository = new MessageRepository();
     }
 
+    public function getMessagesById($currentUserId, $friendId) {
+        return $this->repository->getMessagesById($currentUserId, $friendId);
+    }
     
 }
 

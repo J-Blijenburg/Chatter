@@ -16,5 +16,14 @@ class MessageController extends Controller
         $this->service = new MessageService();
     }
 
+    public function getMessagesById($currentUserId, $friendId){
+        try {
+            $messages = $this->service->getMessagesById($currentUserId, $friendId);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+
+        $this->respond($messages);
+    }
    
 }
