@@ -20,9 +20,9 @@
                         <div class="col-md-9">
                             <div class="row">
                                 <div id="chat" class="col-md-12">
-                                    <div class="scrollbar">
+                                    <div class="scrollbar" >
                                         <div class="chat-box" v-for="msg in message" :key="msg.id">
-                                            <div v-if="msg.fromUser === 6" class="chat-message-User">
+                                            <div v-if="msg.fromUser !== activeUser" class="chat-message-User">
                                                 <div class="message">
                                                         {{ msg.textMessage }}
 
@@ -38,13 +38,10 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-
                                     <form>
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control" placeholder="Enter text message...">
-                                            <button class="btn btn-primary" type="button" id="button-addon2">Send</button>
+                                            <button @click="sendMessage()" class="btn btn-primary" type="button" id="button-addon2">Send</button>
                                         </div>
                                     </form>
                                 </div>
@@ -92,6 +89,20 @@ export default {
                 .then((res) => {
                     console.log(res.data);
                     this.message = res.data;
+                })
+                .catch((error) => console.log(error));
+        },
+        sendMessage(){
+            axios.post("http://localhost/messages/createMessage", {
+                fromUser: localStorage.getItem("userId"),
+                toUser: this.activeUser,
+                textMessage: document.querySelector("input").value,
+                sendAt: "2023-04-02 16:11:52"
+            })
+                .then((res) => {
+                    console.log(res);
+                    document.querySelector("input").value = "";
+                    this.getChatWithFriend();
                 })
                 .catch((error) => console.log(error));
         }

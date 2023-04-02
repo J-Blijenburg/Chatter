@@ -25,6 +25,7 @@ $router->get('/friends/getChatFriendsByUserId/(\d+)', 'FriendsController@getChat
 
 //routes for the messages endpoint
 $router->get('/messages/getMessagesById/(\d+)/(\d+)', 'MessageController@getMessagesById');
+$router->post('/messages/createMessage', 'MessageController@createMessage');
 
 // Run it!
 $router->run();

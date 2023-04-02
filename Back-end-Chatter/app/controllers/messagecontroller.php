@@ -25,5 +25,15 @@ class MessageController extends Controller
 
         $this->respond($messages);
     }
+
+    public function createMessage(){
+        try{
+            $message = $this->createObjectFromPostedJson("Models\\Message");
+            $message = $this->service->insert($message);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+
+    }
    
 }

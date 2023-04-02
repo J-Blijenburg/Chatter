@@ -15,6 +15,9 @@ class MessageService {
     public function getMessagesById($currentUserId, $friendId) {
         return $this->repository->getMessagesById($currentUserId, $friendId);
     }
+    public function insert($message) {       
+        return $this->repository->insert($message);        
+    }
     
 }
 

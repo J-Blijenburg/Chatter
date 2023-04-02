@@ -83,5 +83,6 @@
     overflow-y: scroll;
     scrollbar-width: auto;
     scrollbar-color: #000000 #ffffff;
-
+    display: flex;
+    flex-direction: column;
 }

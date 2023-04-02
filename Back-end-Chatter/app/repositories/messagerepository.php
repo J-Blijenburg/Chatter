@@ -24,6 +24,49 @@ class MessageRepository extends Repository
         }
     }
 
+    function insert($message)
+    {
+        try {
+            $stmt = $this->connection->prepare("INSERT into messages (fromUser, toUser, textMessage, sendAt) VALUES (?,?,?,?)");
+
+            $stmt->execute([$message->fromUser, $message->toUser, $message->textMessage, $message->sendAt]);
+
+
+            $message->id = $this->connection->lastInsertId();
+
+            return $this->getOne($message->id);
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+    function getOne($id)
+    {
+        try {
+            $query = "SELECT id, fromUser, toUser, textMessage, sendAt FROM messages WHERE id = :id";
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $row = $stmt->fetch();
+            $user = $this->rowToUser($row);
+
+            return $user;
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+    function rowToUser($row) {
+        $message = new Message();
+        $message->id = $row['id'];
+        $message->fromUser = $row['fromUser'];
+        $message->toUser = $row['toUser'];
+        $message->textMessage = $row['textMessage'];
+        $message->sendAt = $row['sendAt'];
+
+        return $message;
+    }
+
    
     
 }
