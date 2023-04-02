@@ -10,7 +10,12 @@
                     <div class="row">
                         <div id="chatContacts" class="col-md-3">
                             <ul class="list-group">
-                                <li class="list-group-item" v-for="user in users" :key="user.id">{{ user.username }}</li>
+                                <li class="list-group-item" v-for="user in users" :key="user.id"
+                                    :class="{ 'active': activeUser === user.username, 'hover': hoveredUser === user.username }"
+                                    @click="activeUser = user.username" @mouseover="hoveredUser = user.username"
+                                    @mouseout="hoveredUser = ''">
+                                    {{ user.username }}
+                                </li>
                             </ul>
                         </div>
                         <div class="col-md-9">
@@ -36,13 +41,12 @@
                                             <p>John: Not yet, I still have a few things to do.</p>
                                         </div>
                                     </div>
-                                        
-                                        
+
+
                                     <form>
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control" placeholder="Enter text message...">
-                                            <button class="btn btn-primary" type="button"
-                                                id="button-addon2">Send</button>
+                                            <button class="btn btn-primary" type="button" id="button-addon2">Send</button>
                                         </div>
                                     </form>
                                 </div>
@@ -69,7 +73,9 @@ export default {
     data() {
         return {
             users: [],
-        };
+            activeUser: '',
+            hoveredUser: ''
+        }
     },
     mounted() {
         this.getFriends(localStorage.getItem("userId"));
@@ -89,4 +95,5 @@ export default {
 </script>
     
 <style>
-@import '../assets/css/chats.css';</style>
+@import '../assets/css/chats.css';
+</style>

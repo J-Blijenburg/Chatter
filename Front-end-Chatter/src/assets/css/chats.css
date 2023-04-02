@@ -39,3 +39,11 @@
     margin-left: 2.5%;
     margin-top: 2.5%;
 }
+
+
+.list-group-item:hover {
+    cursor: pointer;
+  }
+  .hover {
+    background-color: #eee;
+  }
