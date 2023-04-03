@@ -100,8 +100,15 @@ class friendsController extends Controller
     public function addRandomUser()
     {
         try {
-            $friendship = $this->createObjectFromPostedJson("Models\\Friends");
-            $this->service->insertRandomFriendship($friendship);
+            // Checks for a valid jwt, returns 401 if none is found
+            $token = $this->checkForJwt();
+            if (!$token)
+                return;
+
+            // Extract and return the values from the decoded JWT token
+            $jwtValues = $token->data;
+            
+            $this->service->insertRandomFriendship($jwtValues->id);
 
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());

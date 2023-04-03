@@ -33,9 +33,9 @@ class FriendsService
         return $this->repository->insert($firstUser, $secondUser);
     }
 
-    public function insertRandomFriendship($friendship)
+    public function insertRandomFriendship($userId)
     {
-        $this->repository->insertRandomFriendship($friendship);
+        $this->repository->insertRandomFriendship($userId);
     }
 }
 

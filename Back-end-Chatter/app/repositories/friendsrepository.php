@@ -73,13 +73,13 @@ class FriendsRepository extends Repository
         }
     }
 
-    function insertRandomFriendship($friendship)
+    function insertRandomFriendship($userId)
     {
         try {
             $stmt = $this->connection->prepare("INSERT into friends (firstUser, secondUser, activeChat) VALUES (:firstUser,:secondUser,0)");
-            $stmt->bindParam(':firstUser', $friendship->firstUser);
+            $stmt->bindParam(':firstUser', $userId);
 
-            $randomUserId = $this->getRandomUserId($friendship);
+            $randomUserId = $this->getRandomUserId($userId);
 
             $stmt->bindParam(':secondUser', $randomUserId);
             $stmt->execute();
@@ -88,7 +88,7 @@ class FriendsRepository extends Repository
         }
     }
 
-    private function getRandomUserId($friendship)
+    private function getRandomUserId($userId)
     {
         try {
             $stmt = $this->connection->prepare("SELECT id FROM users
@@ -99,7 +99,7 @@ class FriendsRepository extends Repository
                 OR (secondUser = :id AND firstUser = users.id)
             )
             ORDER BY RAND() LIMIT 1");
-            $stmt->bindParam(':id', $friendship->firstUser);
+            $stmt->bindParam(':id', $userId);
             $stmt->execute();
 
             $stmt->setFetchMode(PDO::FETCH_ASSOC);

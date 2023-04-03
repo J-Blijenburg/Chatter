@@ -54,8 +54,10 @@ export default {
                 })
         },
         addRandomUser() {
-            axios.post("http://localhost/friends/addRandomUser/", {
-                firstUser: localStorage.getItem("userId")
+            axios.post("http://localhost/friends/addRandomUser/", null, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                }
             })
                 .then((res) => {
                     this.$router.push("/friends");
