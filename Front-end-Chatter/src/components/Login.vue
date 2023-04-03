@@ -11,6 +11,7 @@
                     <label for="inputPassword" class="form-label">Password</label>
                     <input v-model="password" type="password" class="form-control" id="inputPassword" />
                 </div>
+                <label id="errorMessage" for=""></label>
                 <button @click="login()" type='button' class="btnLogin">Submit</button>
             </form>
         </div>
@@ -34,7 +35,11 @@ export default {
                     axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.jwt;
                     this.$router.push("/start");
                 })
-                .catch((error) => console.log(error));
+                .catch((error) => {
+                    document.getElementById("errorMessage").innerHTML = "Username or password is incorrect";
+                    console.log(error)
+                }
+                );
         },
     }
 }

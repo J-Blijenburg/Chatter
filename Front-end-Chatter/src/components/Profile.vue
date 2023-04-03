@@ -18,7 +18,7 @@
                         </div>
                         <div class="layoutProfileSettings" >
                             <h6>Password</h6>
-                            <input type="text" placeholder="Password" id="ChangePassword">
+                            <input type="password" placeholder="Password" id="ChangePassword">
                         </div>
 
                         <button @click="changeProfileSettings()" class="btnEditUser">Change</button>

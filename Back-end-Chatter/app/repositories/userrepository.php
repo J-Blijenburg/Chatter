@@ -13,25 +13,37 @@ class UserRepository extends Repository
     {
         try {
             // retrieve the user with the given username
-            $stmt = $this->connection->prepare("SELECT id, username, password, email FROM users WHERE username = :username");
+            $stmt = $this->connection->prepare("SELECT id, username, password FROM users WHERE username = :username");
             $stmt->bindParam(':username', $username);
             $stmt->execute();
-
+    
             $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\User');
             $user = $stmt->fetch();
-
-            // verify if the password matches the hash in the database
-            $result = $this->verifyPassword($password, $user->password);
-
-            if (!$result)
+    
+            if (!$user) {
+                // user not found
                 return false;
-
-            // do not pass the password hash to the caller
-            $user->password = "";
-
+            }
+    
+            // verify if the password matches the hash in the database
+            $stmt = $this->connection->prepare("SELECT password FROM users WHERE id = :id");
+            $stmt->bindParam(':id', $user->id);
+            $stmt->execute();
+    
+            $hash = $stmt->fetchColumn();
+            $result = $this->verifyPassword($password, $hash);
+    
+            if (!$result) {
+                // password does not match
+                return false;
+            }
+    
+            // do not return sensitive information
+            $user->email = "";
+    
             return $user;
         } catch (PDOException $e) {
-            echo $e;
+            throw new Exception("Error checking username and password: " . $e->getMessage());
         }
     }
 
