@@ -27,6 +27,10 @@ class UserService {
     public function getOne($id) {
         return $this->repository->getOne($id);
     }
+
+    public function delete($userId){
+        $this->repository->delete($userId);
+    }
 }
 
 ?>

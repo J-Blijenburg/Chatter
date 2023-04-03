@@ -113,6 +113,19 @@ class UserRepository extends Repository
         }
     }
 
+    function delete($userId)
+    {
+        try {
+            $stmt = $this->connection->prepare("DELETE FROM friends WHERE firstUser = :id OR secondUser = :id;
+            DELETE FROM messages WHERE fromUser = :id OR toUser = :id;
+            DELETE FROM users WHERE id = :id;");
+            $stmt->bindParam(':id', $userId);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
     
 
     

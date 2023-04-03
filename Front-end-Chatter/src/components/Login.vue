@@ -29,7 +29,6 @@ export default {
                 password: this.password,
             })
                 .then((res) => {
-                    console.log(res);
                     localStorage.clear();
                     localStorage.setItem("token", res.data.jwt);
                     axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.jwt;

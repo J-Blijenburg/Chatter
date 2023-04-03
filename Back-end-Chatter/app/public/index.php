@@ -18,6 +18,8 @@ $router->setNamespace('Controllers');
 $router->post('/users/login', 'UserController@login');
 $router->post('/users/register', 'UserController@create');
 $router->get('/users/getOneUser', 'UserController@getOneUser');
+$router->get('/users/getOneUser', 'UserController@getOneUser');
+$router->delete('/users/removeUser', 'UserController@delete');
 
 // routes for the friends endpoint
 $router->get('/friends/getFriendsByUserId/(\d+)', 'FriendsController@getFriendsByUserId');

@@ -17,8 +17,24 @@
     opacity: 97%;
 }
 
-.baseHeader{
-    background-color: lightyellow;
-    height: 100%;
+.baseStartHeader {
+    height: 5%;
     margin: 2.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.baseStartBody{
+    height: 80%;
+    margin: 2.5%;
+    display: flex;
+}
+.baseStartText{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    flex-direction: column;
 }

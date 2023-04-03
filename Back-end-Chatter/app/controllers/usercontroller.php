@@ -59,7 +59,7 @@ class UserController extends Controller
 
         $issuedAt = time(); // issued at
         $notbefore = $issuedAt; //not valid before 
-        $expire = $issuedAt + 600; // expiration time is set at +600 seconds (10 minutes)
+        $expire = $issuedAt + 6000; // expiration time is set at +600 seconds (10 minutes)
 
         // JWT expiration times should be kept short (10-30 minutes)
         // A refresh token system should be implemented if we want clients to stay logged in for longer periods
@@ -147,5 +147,19 @@ class UserController extends Controller
             "data" => $user
         );
         $this->respond($response);
+    }
+
+    public function delete()
+    {
+        // Checks for a valid jwt, returns 401 if none is found
+        $token = $this->checkForJwt();
+        if (!$token)
+            return;
+
+        // Extract and return the values from the decoded JWT token
+        $jwtValues = $token->data;
+
+        $this->service->delete($jwtValues->id);
+        return$this->respond("User deleted");
     }
 }
