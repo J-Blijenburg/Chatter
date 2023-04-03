@@ -34,10 +34,10 @@ export default {
         };
     },
     mounted() {
-        this.getFriends(localStorage.getItem("userId"));
+        this.getFriends();
     },
     methods: {
-        getFriends(id) {
+        getFriends() {
             axios.get("http://localhost/friends/getFriendsByUserId",{
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token"),
@@ -49,11 +49,13 @@ export default {
                 .catch((error) => console.log(error));
         },
         StartChat(friendId) {
-            axios.put("http://localhost/friends/startChat/" + localStorage.getItem("userId") + "/" + friendId)
+            axios.put("http://localhost/friends/startChat/" + friendId, null,{
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                }
+            } )
                 .then((res) => {
-
-                    $this.push({ path: '/chats' });
-        
+                    this.$router.push("/chats");
                 })
                 .catch((error) => console.log(error));
         },

@@ -41,9 +41,10 @@ export default {
     },
     methods: {
         addFriend() {
-            axios.post("http://localhost/friends/addFriend", {
-                firstUser: localStorage.getItem("userId"),
-                secondUser: this.secondUser
+            axios.post("http://localhost/friends/addFriend/" + this.secondUser, null,  {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                }
             })
                 .then((res) => {
                     this.$router.push("/friends");

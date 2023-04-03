@@ -28,9 +28,9 @@ class FriendsService
         return $this->repository->update($firstUser, $secondUser);
     }
 
-    public function insert($friends)
+    public function insert($firstUser, $secondUser)
     {
-        return $this->repository->insert($friends);
+        return $this->repository->insert($firstUser, $secondUser);
     }
 
     public function insertRandomFriendship($friendship)

@@ -58,16 +58,16 @@ class FriendsRepository extends Repository
         }
     }
 
-    function insert($friends)
+    function insert($firstUser, $secondUser)
     {
         try {
             $stmt = $this->connection->prepare("INSERT into friends (firstUser, secondUser, activeChat) VALUES (:firstUser,:secondUser,0)");
-            $stmt->bindParam(':firstUser', $friends->firstUser);
-            $stmt->bindParam(':secondUser', $friends->secondUser);
+            $stmt->bindParam(':firstUser', $firstUser);
+            $stmt->bindParam(':secondUser', $secondUser);
             $stmt->execute();
-            $friends->id = $this->connection->lastInsertId();
+            $id = $this->connection->lastInsertId();
 
-            return $this->getOne($friends->id);
+            return $this->getOne($id);
         } catch (PDOException $e) {
             echo $e;
         }

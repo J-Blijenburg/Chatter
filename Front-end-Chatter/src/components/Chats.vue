@@ -106,13 +106,15 @@ export default {
         },
         sendMessage() {
             axios.post("http://localhost/messages/createMessage", {
-                fromUser: localStorage.getItem("userId"),
                 toUser: this.activeUser,
                 textMessage: document.querySelector("input").value,
                 sendAt: "2023-04-02 16:11:52"
+            }, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                }
             })
                 .then((res) => {
-                    console.log(res);
                     document.querySelector("input").value = "";
                     this.getChatWithFriend();
                     this.$nextTick(() => {

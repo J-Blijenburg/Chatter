@@ -54,28 +54,47 @@ class friendsController extends Controller
         $this->respond($friends);
     }
 
-    public function updateFriendsChatStatus($firstUser, $secondUser)
+    public function updateFriendsChatStatus($secondUser)
     {
         try {
-            $this->service->update($firstUser, $secondUser);
+            // Checks for a valid jwt, returns 401 if none is found
+            $token = $this->checkForJwt();
+            if (!$token)
+                return;
+
+            // Extract and return the values from the decoded JWT token
+            $jwtValues = $token->data;
+
+           
+            $this->service->update($jwtValues->id, $secondUser);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
     }
 
-    public function addFriend()
+    public function addFriend($friendId)
     {
         try {
-            $friends = $this->createObjectFromPostedJson("Models\\Friends");
-            $friends = $this->service->insert($friends);
+            // Checks for a valid jwt, returns 401 if none is found
+            $token = $this->checkForJwt();
+            if (!$token)
+                return;
+
+            // Extract and return the values from the decoded JWT token
+            $jwtValues = $token->data;
+            
+
+            $friends = $this->service->insert($jwtValues->id, $friendId);
+            
+            $this->respond($friends);
+
 
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($friends);
-
+        
     }
 
     public function addRandomUser()
