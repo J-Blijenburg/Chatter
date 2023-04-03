@@ -36,6 +36,13 @@
     display: flex;
     flex-direction: column;
 }
+.btnEditUser{
+    background-color: #67a1f8;
+}
+
+.btnEditUser:hover{
+    background-color: #0d6efd;
+}
 
 .removeUser{
     width: 25%;

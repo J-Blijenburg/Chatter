@@ -35,7 +35,7 @@ class UserRepository extends Repository
         }
     }
 
-    
+
 
     // verify the password hash
     function verifyPassword($input, $hash)
@@ -81,7 +81,8 @@ class UserRepository extends Repository
         }
     }
 
-    function rowToUser($row) {
+    function rowToUser($row)
+    {
         $user = new User();
         $user->id = $row['id'];
         $user->username = $row['username'];
@@ -126,7 +127,23 @@ class UserRepository extends Repository
         }
     }
 
-    
+    public function updateProfileSettings($user)
+    {
+        try {
+            $hashedPasword = $this->hashPassword($user->password);
+            $stmt = $this->connection->prepare("UPDATE users SET username = :username, email = :email, password = :password WHERE id = :id");
+            $stmt->bindParam(':id', $user->id);
+            $stmt->bindParam(':username', $user->username);
+            $stmt->bindParam(':email', $user->email);
+            $stmt->bindParam(':password',$hashedPasword);
+            $stmt->execute();
 
-    
+
+        } catch (PDOException $e) {
+            echo $e;
+        }
+
+
+
+    }
 }

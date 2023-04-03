@@ -10,18 +10,18 @@
                     <div class="profileItemSettings">
                         <div class="layoutProfileSettings">
                             <h6>Username</h6>
-                            <input type="text" value="dasdsa">
+                            <input type="text" v-model="user.username">
                         </div>
                         <div class="layoutProfileSettings">
                             <h6>Email</h6>
-                            <input type="text" value="Email">
+                            <input type="text" v-model="user.email">
                         </div>
-                        <div class="layoutProfileSettings">
+                        <div class="layoutProfileSettings" >
                             <h6>Password</h6>
-                            <input type="password" value="">
+                            <input type="text" placeholder="Password" id="ChangePassword">
                         </div>
 
-                        <button>Change</button>
+                        <button @click="changeProfileSettings()" class="btnEditUser">Change</button>
                     </div>
 
                     <div class="removeUser">
@@ -42,14 +42,44 @@ export default {
     components: {
         Navigation
     },
+    data() {
+        return {
+            user: {
+                username: "",
+                email: "",
+                id: "",
+                password: ""
+            }
+        }
+    },
+    mounted() {
+        this.getOneUser();
+    },
     methods: {
-        changeProfileSettings() {
-            axios.post("http://localhost/users/changeProfileSettings", {
-                username: localStorage.getItem("username"),
-                email: localStorage.getItem("email"),
-                password: localStorage.getItem("password")
+        getOneUser() {
+            axios.get("http://localhost/users/getOneUser", {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
             })
                 .then((res) => {
+                    this.user.username = res.data.data.username;
+                    this.user.email = res.data.data.email;
+                    this.user.id = res.data.data.id;
+                    this.user.password =   res.data.data.password;
+                    localStorage.setItem("userId", res.data.data.id);
+                })
+                .catch((error) => console.log(error));
+        },
+        changeProfileSettings() {
+            axios.put("http://localhost/users/changeProfileSettings", {
+                id: this.user.id,
+                username: this.user.username,
+                email: this.user.email,
+                password:  document.getElementById("ChangePassword").value,
+            })
+                .then((res) => {
+                    alert(document.getElementById("ChangePassword").value);
                     this.$router.push("/profile");
                 })
                 .catch((err) => {

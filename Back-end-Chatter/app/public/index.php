@@ -20,6 +20,7 @@ $router->post('/users/register', 'UserController@create');
 $router->get('/users/getOneUser', 'UserController@getOneUser');
 $router->get('/users/getOneUser', 'UserController@getOneUser');
 $router->delete('/users/removeUser', 'UserController@delete');
+$router->put('/users/changeProfileSettings', 'UserController@updateProfileSettings');
 
 // routes for the friends endpoint
 $router->get('/friends/getFriendsByUserId/(\d+)', 'FriendsController@getFriendsByUserId');

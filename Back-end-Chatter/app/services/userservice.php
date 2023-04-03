@@ -31,6 +31,12 @@ class UserService {
     public function delete($userId){
         $this->repository->delete($userId);
     }
+
+    public function updateProfileSettings($user) {
+        
+
+        $this->repository->updateProfileSettings($user);
+    }
 }
 
 ?>

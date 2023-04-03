@@ -162,4 +162,12 @@ class UserController extends Controller
         $this->service->delete($jwtValues->id);
         return$this->respond("User deleted");
     }
+
+    public function updateProfileSettings(){
+        $user = $this->createObjectFromPostedJson("Models\\User");
+
+        $this->service->updateProfileSettings($user);
+
+        $this->respond("User updated");
+    }
 }
