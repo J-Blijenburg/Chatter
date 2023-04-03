@@ -23,14 +23,14 @@ $router->delete('/users/removeUser', 'UserController@delete');
 $router->put('/users/changeProfileSettings', 'UserController@updateProfileSettings');
 
 // routes for the friends endpoint
-$router->get('/friends/getFriendsByUserId/(\d+)', 'FriendsController@getFriendsByUserId');
-$router->get('/friends/getChatFriendsByUserId/(\d+)', 'FriendsController@getChatFriendsByUserId');
+$router->get('/friends/getFriendsByUserId', 'FriendsController@getFriendsByUserId');
+$router->get('/friends/getChatFriendsByUserId', 'FriendsController@getChatFriendsByUserId');
 $router->put('/friends/startChat/(\d+)/(\d+)', 'FriendsController@updateFriendsChatStatus');
 $router->post('/friends/addFriend', 'FriendsController@addFriend');
 $router->post('/friends/addRandomUser', 'FriendsController@addRandomUser');
 
 //routes for the messages endpoint
-$router->get('/messages/getMessagesById/(\d+)/(\d+)', 'MessageController@getMessagesById');
+$router->get('/messages/getMessagesById/(\d+)', 'MessageController@getMessagesById');
 $router->post('/messages/createMessage', 'MessageController@createMessage');
 
 // Run it!

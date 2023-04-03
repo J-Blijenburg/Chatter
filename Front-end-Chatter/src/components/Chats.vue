@@ -40,7 +40,8 @@
                                     </div>
                                     <form>
                                         <div class="input-group mb-3">
-                                            <input @keydown.enter.prevent="sendMessage()" type="text" class="form-control" placeholder="Enter text message...">
+                                            <input @keydown.enter.prevent="sendMessage()" type="text" class="form-control"
+                                                placeholder="Enter text message...">
                                             <button @click="sendMessage()" class="btn btn-primary" type="button"
                                                 id="button-addon2">Send</button>
                                         </div>
@@ -75,20 +76,27 @@ export default {
         }
     },
     mounted() {
-        this.getFriends(localStorage.getItem("userId"));
+        this.getFriends();
     },
     methods: {
-        getFriends(id) {
-            axios.get("http://localhost/friends/getChatFriendsByUserId/" + id)
+        getFriends() {
+            axios.get("http://localhost/friends/getChatFriendsByUserId", {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                }
+            })
                 .then((res) => {
                     this.users = res.data;
                 })
                 .catch((error) => console.log(error));
         },
         getChatWithFriend() {
-            axios.get("http://localhost//messages/getMessagesById/" + localStorage.getItem("userId") + "/" + this.activeUser)
+            axios.get("http://localhost//messages/getMessagesById/" + this.activeUser, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                }
+            })
                 .then((res) => {
-                    console.log(res.data);
                     this.message = res.data;
                     this.$nextTick(() => {
                         this.$refs.chatBox.scrollTop = this.$refs.chatBox.scrollHeight;

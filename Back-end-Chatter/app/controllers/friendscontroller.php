@@ -16,10 +16,18 @@ class friendsController extends Controller
         $this->service = new FriendsService();
     }
 
-    public function getFriendsByUserId($id)
+    public function getFriendsByUserId()
     {
         try {
-            $friends = $this->service->getFriendsByUserId($id);
+            // Checks for a valid jwt, returns 401 if none is found
+            $token = $this->checkForJwt();
+            if (!$token)
+                return;
+
+            // Extract and return the values from the decoded JWT token
+            $jwtValues = $token->data;
+
+            $friends = $this->service->getFriendsByUserId($jwtValues->id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
@@ -27,9 +35,18 @@ class friendsController extends Controller
         $this->respond($friends);
     }
 
-    public function getChatFriendsByUserId($id){
+    public function getChatFriendsByUserId()
+    {
         try {
-            $friends = $this->service->getChatFriendsByUserId($id);
+            // Checks for a valid jwt, returns 401 if none is found
+            $token = $this->checkForJwt();
+            if (!$token)
+                return;
+
+            // Extract and return the values from the decoded JWT token
+            $jwtValues = $token->data;
+
+            $friends = $this->service->getChatFriendsByUserId($jwtValues->id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
@@ -37,16 +54,18 @@ class friendsController extends Controller
         $this->respond($friends);
     }
 
-    public function updateFriendsChatStatus($firstUser, $secondUser){
-        try{
+    public function updateFriendsChatStatus($firstUser, $secondUser)
+    {
+        try {
             $this->service->update($firstUser, $secondUser);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
-        
+
     }
 
-    public function addFriend(){
+    public function addFriend()
+    {
         try {
             $friends = $this->createObjectFromPostedJson("Models\\Friends");
             $friends = $this->service->insert($friends);
@@ -59,7 +78,8 @@ class friendsController extends Controller
 
     }
 
-    public function addRandomUser(){
+    public function addRandomUser()
+    {
         try {
             $friendship = $this->createObjectFromPostedJson("Models\\Friends");
             $this->service->insertRandomFriendship($friendship);

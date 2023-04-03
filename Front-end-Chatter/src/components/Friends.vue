@@ -38,7 +38,11 @@ export default {
     },
     methods: {
         getFriends(id) {
-            axios.get("http://localhost/friends/getFriendsByUserId/" + id)
+            axios.get("http://localhost/friends/getFriendsByUserId",{
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                }
+            })
                 .then((res) => {
                     this.users = res.data;
                 })

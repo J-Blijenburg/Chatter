@@ -50,7 +50,6 @@ export default {
           this.user.username = res.data.data.username;
           this.user.email = res.data.data.email;
           this.user.id = res.data.data.id;
-          localStorage.setItem("userId", res.data.data.id);
         })
         .catch((error) => console.log(error));
     },

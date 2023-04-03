@@ -16,9 +16,17 @@ class MessageController extends Controller
         $this->service = new MessageService();
     }
 
-    public function getMessagesById($currentUserId, $friendId){
+    public function getMessagesById($friendId){
         try {
-            $messages = $this->service->getMessagesById($currentUserId, $friendId);
+            // Checks for a valid jwt, returns 401 if none is found
+            $token = $this->checkForJwt();
+            if (!$token)
+                return;
+
+            // Extract and return the values from the decoded JWT token
+            $jwtValues = $token->data;
+
+            $messages = $this->service->getMessagesById($jwtValues->id, $friendId);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }

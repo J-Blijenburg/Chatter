@@ -18,9 +18,9 @@ class FriendsService
         return $this->repository->getFriendsByUserId($id);
     }
 
-    public function getChatFriendsByUserId($id)
+    public function getChatFriendsByUserId($userId)
     {
-        return $this->repository->getChatFriendsByUserId($id);
+        return $this->repository->getChatFriendsByUserId($userId);
     }
 
     public function update($firstUser, $secondUser)

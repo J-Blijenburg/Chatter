@@ -50,3 +50,9 @@
 .btnLogin:hover{
     background-color: rgb(2, 145, 2);
 }
+
+#errorMessage{
+    color: red;
+    display: flex;
+    justify-content: center;
+}

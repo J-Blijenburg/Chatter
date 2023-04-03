@@ -11,7 +11,7 @@
                     <label for="inputPassword" class="form-label">Password</label>
                     <input v-model="password" type="password" class="form-control" id="inputPassword" />
                 </div>
-                <label id="errorMessage" for=""></label>
+                <label id="errorMessage"></label>
                 <button @click="login()" type='button' class="btnLogin">Submit</button>
             </form>
         </div>
@@ -30,7 +30,7 @@ export default {
                 password: this.password,
             })
                 .then((res) => {
-                    localStorage.clear();
+                    localStorage.clear(); 
                     localStorage.setItem("token", res.data.jwt);
                     axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.jwt;
                     this.$router.push("/start");
