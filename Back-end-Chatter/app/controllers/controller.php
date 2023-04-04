@@ -69,4 +69,13 @@ class Controller
         }
         return $object;
     }
+
+    public function createObjectFromPostedFile($className, $fieldName) {
+        $object = new $className();
+        if(isset($_FILES[$fieldName]) && $_FILES[$fieldName]['error'] == UPLOAD_ERR_OK) {
+            $file = $_FILES[$fieldName]['tmp_name'];
+            $object->image = file_get_contents($file);
+        }
+        return $object;
+    }
 }

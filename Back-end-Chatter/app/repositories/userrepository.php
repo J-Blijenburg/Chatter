@@ -179,4 +179,17 @@ class UserRepository extends Repository
             echo $e;
         }
     }
+
+    public function getProfileImage($userId){
+        try {
+            $stmt = $this->connection->prepare("SELECT IM.id,  IM.image FROM users AS US JOIN images AS IM ON US.profileImageID = IM.id WHERE US.id = :id");
+            $stmt->bindParam(':id', $userId);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Image');
+            $image = $stmt->fetch();
+            return $image;
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
 }

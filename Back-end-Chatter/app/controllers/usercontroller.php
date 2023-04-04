@@ -194,12 +194,22 @@ class UserController extends Controller
             $this->respondWithError(500, $e->getMessage());
         }
     }
-    public function createObjectFromPostedFile($className, $fieldName) {
-        $object = new $className();
-        if(isset($_FILES[$fieldName]) && $_FILES[$fieldName]['error'] == UPLOAD_ERR_OK) {
-            $file = $_FILES[$fieldName]['tmp_name'];
-            $object->image = file_get_contents($file);
+
+    public function getProfileImage(){
+        try{
+            // Checks for a valid jwt, returns 401 if none is found
+            $token = $this->checkForJwt();
+            if (!$token)
+                return;
+
+            $jwtValues = $token->data;
+
+            $image = $this->service->getProfileImage($jwtValues->id);
+
+            $this->respond($image);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
         }
-        return $object;
     }
+    
 }

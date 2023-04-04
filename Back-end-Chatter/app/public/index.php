@@ -18,6 +18,7 @@ $router->setNamespace('Controllers');
 $router->post('/users/login', 'UserController@login');
 $router->post('/users/register', 'UserController@create');
 $router->post('/users/setProfileImage', 'UserController@setProfileImage');
+$router->get('/users/getProfileImage', 'UserController@getProfileImage');
 $router->get('/users/getOneUser', 'UserController@getOneUser');
 $router->get('/users/getOneUser', 'UserController@getOneUser');
 $router->delete('/users/removeUser', 'UserController@delete');
