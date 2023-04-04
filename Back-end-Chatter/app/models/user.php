@@ -7,7 +7,7 @@ class User {
     public string $username;
     public string $password;
     public string $email;
-
+    public int $profileImageId;
 }
 
 ?>

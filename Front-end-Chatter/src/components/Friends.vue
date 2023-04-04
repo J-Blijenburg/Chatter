@@ -9,7 +9,13 @@
                 <div id="friendsListItems" v-if="users.length > 0">
                     <ul class="list-group" id="friendsList">
                         <li id="singleFriendList" class="list-group-item" v-for="user in users" :key="user.id">
-                            {{ user.username }}
+                            <div class="friendImageUsername">
+                                <div class="friendImage">
+                                    test
+                                </div>
+                                {{ user.username }}
+                            </div>
+
                             <button @click="StartChat(user.id)" class="btn btn-primary btn-sm float-right">Chat</button>
                         </li>
                     </ul>
@@ -38,7 +44,7 @@ export default {
     },
     methods: {
         getFriends() {
-            axios.get("http://localhost/friends/getFriendsByUserId",{
+            axios.get("http://localhost/friends/getFriendsByUserId", {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 }
@@ -49,11 +55,11 @@ export default {
                 .catch((error) => console.log(error));
         },
         StartChat(friendId) {
-            axios.put("http://localhost/friends/startChat/" + friendId, null,{
+            axios.put("http://localhost/friends/startChat/" + friendId, null, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token")
                 }
-            } )
+            })
                 .then((res) => {
                     this.$router.push("/chats");
                 })

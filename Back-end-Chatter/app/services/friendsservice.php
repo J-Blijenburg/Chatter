@@ -35,7 +35,7 @@ class FriendsService
 
     public function insertRandomFriendship($userId)
     {
-        $this->repository->insertRandomFriendship($userId);
+       return $this->repository->insertRandomFriendship($userId);
     }
 }
 

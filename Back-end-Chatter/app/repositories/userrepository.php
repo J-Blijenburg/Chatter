@@ -6,6 +6,7 @@ use PDO;
 use PDOException;
 use Repositories\Repository;
 use Models\User;
+use Models\Images;
 
 class UserRepository extends Repository
 {
@@ -154,8 +155,28 @@ class UserRepository extends Repository
         } catch (PDOException $e) {
             echo $e;
         }
+    }
 
+    public function createImage($image){
+        try {
+            $stmt = $this->connection->prepare("INSERT INTO images (image) VALUES (:image)");
+            $stmt->bindParam(':image', $image);
+            $stmt->execute();
+            $image = $this->connection->lastInsertId();
+            return $image;
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
 
-
+    public function setProfileImage($createdImageId, $userId){
+        try {
+            $stmt = $this->connection->prepare("UPDATE users SET profileImageId = :profileImageId WHERE id = :id");
+            $stmt->bindParam(':id', $userId);
+            $stmt->bindParam(':profileImageId', $createdImageId);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo $e;
+        }
     }
 }

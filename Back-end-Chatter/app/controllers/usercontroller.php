@@ -170,4 +170,36 @@ class UserController extends Controller
 
         $this->respond("User updated");
     }
+
+    public function setProfileImage(){
+        try{
+            // Checks for a valid jwt, returns 401 if none is found
+            $token = $this->checkForJwt();
+            if (!$token)
+                return;
+
+
+            $jwtValues = $token->data;
+            
+            $image = $this->createObjectFromPostedFile("Models\\Image", 'image');
+
+
+            $createdImage = $this->service->createImage(base64_encode($image->image));
+
+
+            $this->service->setProfileImage($createdImage, $jwtValues->id);
+
+            $this->respond($createdImage);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+    }
+    public function createObjectFromPostedFile($className, $fieldName) {
+        $object = new $className();
+        if(isset($_FILES[$fieldName]) && $_FILES[$fieldName]['error'] == UPLOAD_ERR_OK) {
+            $file = $_FILES[$fieldName]['tmp_name'];
+            $object->image = file_get_contents($file);
+        }
+        return $object;
+    }
 }

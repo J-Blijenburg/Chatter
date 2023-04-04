@@ -48,9 +48,11 @@ class MessageController extends Controller
 
             $message->fromUser = $jwtValues->id;
 
-            $this->respond($message->fromUser);
+            
 
             $message = $this->service->insert($message);
+
+            $this->respond($message);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }

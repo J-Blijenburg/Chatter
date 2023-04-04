@@ -83,6 +83,11 @@ class FriendsRepository extends Repository
 
             $stmt->bindParam(':secondUser', $randomUserId);
             $stmt->execute();
+            
+            $friendsId = $this->connection->lastInsertId();
+
+            return $this->getOne($friendsId);
+
         } catch (PDOException $e) {
             echo $e;
         }

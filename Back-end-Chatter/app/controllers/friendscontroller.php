@@ -108,10 +108,14 @@ class friendsController extends Controller
             // Extract and return the values from the decoded JWT token
             $jwtValues = $token->data;
             
-            $this->service->insertRandomFriendship($jwtValues->id);
+            $friends = $this->service->insertRandomFriendship($jwtValues->id);
+
+            $this->respond($friends);
 
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
     }
+
+    
 }

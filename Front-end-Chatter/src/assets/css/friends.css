@@ -26,3 +26,13 @@
     display: flex;
     justify-content: space-between;
 }
+
+.friendImageUsername{
+    display: flex;
+    gap: 50%;
+}
+
+.friendImage{
+    border: 1px solid black;
+
+}

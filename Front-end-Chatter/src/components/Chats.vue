@@ -11,8 +11,8 @@
                         <div id="chatContacts" class="col-md-3">
                             <ul class="list-group">
                                 <li class="list-group-item" v-for="user in users" :key="user.id"
-                                    :class="{ 'active': activeUser === user.id }"
-                                    @click="activeUser = user.id, getChatWithFriend()">
+                                    :class="{ 'active': selectedUser === user.id }"
+                                    @click="selectedUser = user.id, getChatWithFriend()">
                                     {{ user.username }}
                                 </li>
                             </ul>
@@ -22,7 +22,7 @@
                                 <div id="chat" class="col-md-12">
                                     <div class="scrollbar" ref="chatBox">
                                         <div class="chat-box" v-for="msg in message" :key="msg.id">
-                                            <div v-if="msg.fromUser !== activeUser" class="chat-message-User">
+                                            <div v-if="msg.fromUser !== selectedUser" class="chat-message-User">
                                                 <div class="message">
                                                     {{ msg.textMessage }}
 
@@ -71,7 +71,7 @@ export default {
         return {
             users: [],
             message: [],
-            activeUser: '',
+            selectedUser: '',
             hoveredUser: ''
         }
     },
@@ -91,7 +91,7 @@ export default {
                 .catch((error) => console.log(error));
         },
         getChatWithFriend() {
-            axios.get("http://localhost//messages/getMessagesById/" + this.activeUser, {
+            axios.get("http://localhost//messages/getMessagesById/" + this.selectedUser, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 }
@@ -106,7 +106,7 @@ export default {
         },
         sendMessage() {
             axios.post("http://localhost/messages/createMessage", {
-                toUser: this.activeUser,
+                toUser: this.selectedUser,
                 textMessage: document.querySelector("input").value,
                 sendAt: "2023-04-02 16:11:52"
             }, {

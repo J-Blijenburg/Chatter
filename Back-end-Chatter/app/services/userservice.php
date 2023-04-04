@@ -33,9 +33,15 @@ class UserService {
     }
 
     public function updateProfileSettings($user) {
-        
-
         $this->repository->updateProfileSettings($user);
+    }
+
+    public function createImage($image){
+        return $this->repository->createImage($image);
+    }
+
+    public function setProfileImage($createdImageId, $userId) {
+        $this->repository->setProfileImage($createdImageId, $userId);
     }
 }
 

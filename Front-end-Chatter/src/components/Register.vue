@@ -31,7 +31,6 @@ export default {
                 password: this.password,
             })
                 .then((res) => {
-                    console.log(res);
                     alert(res.data.username + " has registered!");
                     this.$router.push("/");
                 })
