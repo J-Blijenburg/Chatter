@@ -45,16 +45,21 @@ class UserService {
         $this->repository->updatePassword($user);
     }
 
-    public function createImage($image){
-        return $this->repository->createImage($image);
-    }
-
+  
     public function setProfileImage($profileImage, $userId) {
         $this->repository->setProfileImage($profileImage, $userId);
     }
 
     public function getProfileImage($userId){
         return $this->repository->getProfileImage($userId);
+    }
+
+    public function uploadImage($targetFile){
+       return $this->repository->uploadImage($targetFile);
+    }
+
+    public function updateProfileImage($imageId, $userId){
+        $this->repository->updateProfileImage($imageId, $userId);
     }
 }
 

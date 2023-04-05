@@ -180,14 +180,14 @@ class UserRepository extends Repository
         }
     }
 
-    public function createImage($image)
+    public function uploadImage($targetFile)
     {
         try {
-            $stmt = $this->connection->prepare("INSERT INTO images (image) VALUES (:image)");
+            $image = file_get_contents($targetFile);
+            $stmt = $this->connection->prepare("INSERT INTO images (images) VALUES (:image)");
             $stmt->bindParam(':image', $image);
             $stmt->execute();
-            $image = $this->connection->lastInsertId();
-            return $image;
+            return $this->connection->lastInsertId();
         } catch (PDOException $e) {
             echo $e;
         }
@@ -208,13 +208,24 @@ class UserRepository extends Repository
     public function getProfileImage($imageId)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT images FROM images WHERE id = :id");
+            $stmt = $this->connection->prepare("SELECT IM.images FROM `users` AS US JOIN images AS IM ON US.imageId = IM.id WHERE US.id = :id");
             $stmt->bindParam(':id', $imageId);
             $stmt->execute();
             $image = $stmt->fetch();
 
             $extraImage = "data:image/jpeg;base64," . base64_encode($image['images']);
             return $extraImage;
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
+    public function updateProfileImage($imageId, $userId){
+        try {
+            $stmt = $this->connection->prepare("UPDATE users SET imageId = :imageId WHERE id = :id");
+            $stmt->bindParam(':id', $userId);
+            $stmt->bindParam(':imageId', $imageId);
+            $stmt->execute();
         } catch (PDOException $e) {
             echo $e;
         }

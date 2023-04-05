@@ -60,7 +60,7 @@ class UserController extends Controller
 
         $issuedAt = time(); // issued at
         $notbefore = $issuedAt; //not valid before 
-        $expire = $issuedAt + 6000; // expiration time is set at +600 seconds (10 minutes)
+        $expire = $issuedAt + 600; // expiration time is set at +600 seconds (10 minutes)
 
         // JWT expiration times should be kept short (10-30 minutes)
         // A refresh token system should be implemented if we want clients to stay logged in for longer periods
@@ -205,7 +205,7 @@ class UserController extends Controller
 
             $jwtValues = $token->data;
 
-            $image = $this->service->getProfileImage($jwtValues->imageId);
+            $image = $this->service->getProfileImage($jwtValues->id);
 
             $this->respond($image);
         } catch (Exception $e) {
@@ -237,36 +237,48 @@ class UserController extends Controller
 
 
 
-    public function setProfileImage()
+    public function uploadImage()
     {
-        try {
-            // Checks for a valid jwt, returns 401 if none is found
+        header('Access-Control-Allow-Origin: *');
+
+        if (!isset($_FILES['file']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
+            $this->respondWithError(400, "No file uploaded");
+            return;
+        }
+
+        $allowed = array('png', 'jpg', 'pdf', 'jpeg');
+        $fileName = $_FILES['file']['name'];
+        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        if (!in_array(strtolower($ext), $allowed)) {
+            $this->respondWithError(400, "File type not allowed");
+            return;
+        }
+
+        $targetFile = 'uploads/' . basename($_FILES['file']['name']);
+
+        if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
+            $imageId = $this->service->uploadImage($targetFile);
+
+
+
             $token = $this->checkForJwt();
             if (!$token)
                 return;
 
             $jwtValues = $token->data;
 
-            $image = $this->createObjectFromPostedFile("Models\\User", 'image');
+            $this->service->updateProfileImage($imageId, $jwtValues->id);
 
-            if ($image == null) {
-                $this->respondWithError(500, "No image found");
-            } else {
-                $encodedImage = base64_encode($image);
+            // refresh the JWT token with the new image id
+            $user = $this->service->getOne($jwtValues->id);
+            $tokenResponse = $this->generateJwt($user);
 
-                $this->service->setProfileImage($encodedImage, $jwtValues->id);
-
-                $this->respond('Profile image updated successfully');
-            }
-
-
-        } catch (Exception $e) {
-            $this->respondWithError(500, $e->getMessage());
+            $this->respond($tokenResponse);
+        } else {
+            $this->respondWithError(500, "Failed to upload file");
         }
     }
-
-
-
+    
 
 
 }

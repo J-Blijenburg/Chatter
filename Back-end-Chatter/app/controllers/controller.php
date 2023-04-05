@@ -38,6 +38,8 @@ class Controller
         }
     }
 
+
+
     function respond($data)
     {
         $this->respondWithCode(200, $data);
@@ -82,4 +84,6 @@ class Controller
         }
         return $image;
     }
+
+    
 }

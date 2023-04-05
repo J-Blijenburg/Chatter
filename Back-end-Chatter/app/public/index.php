@@ -17,7 +17,6 @@ $router->setNamespace('Controllers');
 // routes for the users endpoint
 $router->post('/users/login', 'UserController@login');
 $router->post('/users/register', 'UserController@create');
-$router->post('/users/setProfileImage', 'UserController@setProfileImage');
 $router->get('/users/getProfileImage', 'UserController@getProfileImage');
 $router->get('/users/getOneUser', 'UserController@getOneUser');
 $router->delete('/users/removeUser', 'UserController@delete');
@@ -25,6 +24,9 @@ $router->put('/users/updateUsername', 'UserController@updateUsername');
 $router->put('/users/updateEmail', 'UserController@updateEmail');
 $router->put('/users/updatePassword', 'UserController@updatePassword');
 $router->put('/users/updateProfileImage', 'UserController@updateProfileImage');
+
+//routes for the images endpoint
+$router->post('/images/uploadImage', 'UserController@uploadImage');
 
 // routes for the friends endpoint
 $router->get('/friends/getFriendsByUserId', 'FriendsController@getFriendsByUserId');

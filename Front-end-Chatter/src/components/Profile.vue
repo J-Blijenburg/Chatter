@@ -37,6 +37,12 @@
                             </div>
 
                             <button class="btnChangeProfilePicture">Change Profile Picture</button>
+                            <div class="uploadFile">
+                                <label>File 
+                                    <input type="file" id="file">
+                                </label>
+                                <button v-on:click="uploadImage()">Upload</button>
+                            </div>
                         </div>
                     </div>
                     <div class="removeUser">
@@ -51,8 +57,9 @@
 </template>
     
 <script>
-import axios from 'axios';
-import Navigation from './Navigation.vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+import Navigation from './Navigation.vue';
 
 export default {
     name: "Profile",
@@ -69,6 +76,7 @@ export default {
                 imageId: ""
             },
             profileImage: "",
+            file: ""
 
         }
     },
@@ -88,7 +96,6 @@ export default {
                     this.user.email = res.data.email;
                     this.user.id = res.data.id;
                     this.user.password = res.data.password;
-                    this.user.imageId = res.data.imageId;
                 })
                 .catch((error) => console.log(error));
         },
@@ -155,6 +162,27 @@ export default {
                 .catch((err) => {
                     console.log(err);
                 })
+        },
+        uploadImage(){
+            this.file = document.getElementById('file').files[0];
+            let formData = new FormData();
+            formData.append('file', this.file);
+            axios.post('http://localhost/images/uploadImage', formData, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then((res) => {
+                if(!res.data){
+                    alert('Something went wrong');
+                }
+                else{
+                    alert('Image uploaded');
+                    this.getProfileImage();
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
         }
 
     }
