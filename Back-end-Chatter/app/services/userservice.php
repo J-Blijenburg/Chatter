@@ -16,8 +16,9 @@ class UserService {
         return $this->repository->checkUsernamePassword($username, $password);
     }
 
-    public function insert($item) {       
-        return $this->repository->insert($item);        
+    //insert into users to create a new user
+    public function insert($user) {       
+        return $this->repository->insert($user);        
     }
 
     public function getAll($offset = NULL, $limit = NULL) {

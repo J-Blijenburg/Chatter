@@ -84,7 +84,6 @@ export default {
                     this.user.id = res.data.id;
                     this.user.password = res.data.password;
                     this.user.imageId = res.data.imageId;
-                    console.log(res.data.imageId);
                 })
                 .catch((error) => console.log(error));
         },
