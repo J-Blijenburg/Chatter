@@ -167,14 +167,16 @@ class UserController extends Controller
     }
 
     //update the username of the user
-    public function updateUsername(){
+    public function updateUsername()
+    {
         $user = $this->createObjectFromPostedJson("Models\\User");
 
         $this->service->updateUsername($user);
 
         $this->respond("User updated");
     }
-    public function updateEmail(){
+    public function updateEmail()
+    {
         $user = $this->createObjectFromPostedJson("Models\\User");
 
         $this->service->updateEmail($user);
@@ -182,7 +184,8 @@ class UserController extends Controller
         $this->respond("User updated");
     }
 
-    public function updatePassword(){
+    public function updatePassword()
+    {
         $user = $this->createObjectFromPostedJson("Models\\User");
 
         $this->service->updatePassword($user);
@@ -191,6 +194,46 @@ class UserController extends Controller
     }
 
 
+    //return the profile image of the user
+    public function getProfileImage()
+    {
+        try {
+            //Checks for a valid jwt, returns 401 if none is found
+            $token = $this->checkForJwt();
+            if (!$token)
+                return;
+
+            $jwtValues = $token->data;
+
+            $image = $this->service->getProfileImage($jwtValues->imageId);
+
+            $this->respond($image);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+    }
+
+
+    public function updateProfileImage()
+    {
+        try {
+            // Checks for a valid jwt, returns 401 if none is found
+
+            $image = $this->createObjectFromPostedFile("Models\\Image", 'image');
+
+            if ($image == null) {
+                $this->respondWithError(500, "No image found");
+            } else {
+                // $encodedImage = base64_encode($image);
+
+                // $this->service->updateProfileImage($encodedImage, $jwtValues->id);
+
+                $this->respond('Profile image updated successfully');
+            }
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+    }
 
 
 
@@ -222,22 +265,8 @@ class UserController extends Controller
         }
     }
 
-    public function getProfileImage()
-    {
-        try {
-            //Checks for a valid jwt, returns 401 if none is found
-            $token = $this->checkForJwt();
-            if (!$token)
-                return;
 
-            $jwtValues = $token->data;
 
-            $image = $this->service->getProfileImage($jwtValues->imageId);
 
-            $this->respond($image);
-        } catch (Exception $e) {
-            $this->respondWithError(500, $e->getMessage());
-        }
-    }
 
 }

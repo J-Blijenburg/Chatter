@@ -24,7 +24,7 @@ $router->delete('/users/removeUser', 'UserController@delete');
 $router->put('/users/updateUsername', 'UserController@updateUsername');
 $router->put('/users/updateEmail', 'UserController@updateEmail');
 $router->put('/users/updatePassword', 'UserController@updatePassword');
-
+$router->put('/users/updateProfileImage', 'UserController@updateProfileImage');
 
 // routes for the friends endpoint
 $router->get('/friends/getFriendsByUserId', 'FriendsController@getFriendsByUserId');
