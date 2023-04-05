@@ -37,6 +37,14 @@ class UserService {
         $this->repository->updateUsername($user);
     }
 
+    public function updateEmail($user) {
+        $this->repository->updateEmail($user);
+    }
+
+    public function updatePassword($user) {
+        $this->repository->updatePassword($user);
+    }
+
     public function createImage($image){
         return $this->repository->createImage($image);
     }

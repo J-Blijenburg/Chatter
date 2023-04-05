@@ -174,6 +174,22 @@ class UserController extends Controller
 
         $this->respond("User updated");
     }
+    public function updateEmail(){
+        $user = $this->createObjectFromPostedJson("Models\\User");
+
+        $this->service->updateEmail($user);
+
+        $this->respond("User updated");
+    }
+
+    public function updatePassword(){
+        $user = $this->createObjectFromPostedJson("Models\\User");
+
+        $this->service->updatePassword($user);
+
+        $this->respond("User updated");
+    }
+
 
 
 

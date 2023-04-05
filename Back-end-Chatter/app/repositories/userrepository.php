@@ -150,14 +150,27 @@ class UserRepository extends Repository
             echo $e;
         }
     }
-    public function updateProfileSettings($user)
+
+    public function updateEmail($user)
+    {
+        try {
+            $stmt = $this->connection->prepare("UPDATE users SET email = :email WHERE id = :id");
+            $stmt->bindParam(':id', $user->id);
+            $stmt->bindParam(':email', $user->email);
+            $stmt->execute();
+
+
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
+    public function updatePassword($user)
     {
         try {
             $hashedPasword = $this->hashPassword($user->password);
-            $stmt = $this->connection->prepare("UPDATE users SET username = :username, email = :email, password = :password WHERE id = :id");
+            $stmt = $this->connection->prepare("UPDATE users SET password = :password WHERE id = :id");
             $stmt->bindParam(':id', $user->id);
-            $stmt->bindParam(':username', $user->username);
-            $stmt->bindParam(':email', $user->email);
             $stmt->bindParam(':password', $hashedPasword);
             $stmt->execute();
 

@@ -22,6 +22,8 @@ $router->get('/users/getProfileImage', 'UserController@getProfileImage');
 $router->get('/users/getOneUser', 'UserController@getOneUser');
 $router->delete('/users/removeUser', 'UserController@delete');
 $router->put('/users/updateUsername', 'UserController@updateUsername');
+$router->put('/users/updateEmail', 'UserController@updateEmail');
+$router->put('/users/updatePassword', 'UserController@updatePassword');
 
 
 // routes for the friends endpoint

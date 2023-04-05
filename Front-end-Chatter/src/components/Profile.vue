@@ -20,14 +20,14 @@
                                 <h6>Email</h6>
                                 <div class="input-group">
                                     <input type="text" class="textFields" placeholder="Email" id="txtEmail">
-                                    <button @click="changeProfileSettings()" class="btnEditUser">Change</button>
+                                    <button @click="ChangeEmail()" class="btnEditUser">Change</button>
                                 </div>
                             </div>
                             <div class="layoutProfileSettings">
                                 <h6>Password</h6>
                                 <div class="input-group">
                                     <input type="text" class="textFields" placeholder="Password" id="txtPassword">
-                                    <button @click="changeProfileSettings()" class="btnEditUser">Change</button>
+                                    <button @click="ChangePassword()" class="btnEditUser">Change</button>
                                 </div>
                             </div>
                         </div>
@@ -106,14 +106,12 @@ export default {
                 })
         },
         ChangeEmail() {
-            axios.put("http://localhost/users/changeProfileSettings", {
+            axios.put("http://localhost/users/updateEmail", {
                 id: this.user.id,
-                username: this.user.username,
-                email: this.user.email,
-                password: document.getElementById(changedItem).value,
+                email: document.getElementById('txtEmail').value,
             })
                 .then((res) => {
-                    alert(document.getElementById(changedItem).value);
+                    alert(document.getElementById('txtEmail').value);
                     this.$router.push("/profile");
                 })
                 .catch((err) => {
@@ -121,14 +119,12 @@ export default {
                 })
         },
         ChangePassword() {
-            axios.put("http://localhost/users/changeProfileSettings", {
+            axios.put("http://localhost/users/updatePassword", {
                 id: this.user.id,
-                username: this.user.username,
-                email: this.user.email,
-                password: document.getElementById(changedItem).value,
+                password: document.getElementById('txtPassword').value,
             })
                 .then((res) => {
-                    alert(document.getElementById(changedItem).value);
+                    alert(document.getElementById('txtPassword').value);
                     this.$router.push("/profile");
                 })
                 .catch((err) => {
