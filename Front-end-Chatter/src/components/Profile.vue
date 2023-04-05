@@ -16,7 +16,7 @@
                             <h6>Email</h6>
                             <input type="text" v-model="user.email">
                         </div>
-                        <div class="layoutProfileSettings" >
+                        <div class="layoutProfileSettings">
                             <h6>Password</h6>
                             <input type="password" placeholder="Password" id="ChangePassword">
                         </div>
@@ -26,6 +26,19 @@
 
                     <div class="removeUser">
                         <button @click="removeUser()" class="removeUserButton">Delete account</button>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div>
+                            <h1>dsa</h1>
+                            <img class="image" :src="user.image" alt="">
+                        </div>
+
+                        <div class="profileImage">
+                            <input type="file" id="file" ref="file" @change="onFileChange" class="inputfile" />
+                            <label for="file">Choose a file</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,7 +61,8 @@ export default {
                 username: "",
                 email: "",
                 id: "",
-                password: ""
+                password: "",
+                image: ""
             }
         }
     },
@@ -66,7 +80,9 @@ export default {
                     this.user.username = res.data.data.username;
                     this.user.email = res.data.data.email;
                     this.user.id = res.data.data.id;
-                    this.user.password =   res.data.data.password;
+                    this.user.password = res.data.data.password;
+                    this.user.image = 'data:image/jpeg;base64,' + btoa(res.data.data.image);
+                    console.log(this.user.image);
                 })
                 .catch((error) => console.log(error));
         },
@@ -75,7 +91,7 @@ export default {
                 id: this.user.id,
                 username: this.user.username,
                 email: this.user.email,
-                password:  document.getElementById("ChangePassword").value,
+                password: document.getElementById("ChangePassword").value,
             })
                 .then((res) => {
                     alert(document.getElementById("ChangePassword").value);

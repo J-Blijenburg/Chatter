@@ -40,8 +40,8 @@ class UserService {
         return $this->repository->createImage($image);
     }
 
-    public function setProfileImage($createdImageId, $userId) {
-        $this->repository->setProfileImage($createdImageId, $userId);
+    public function setProfileImage($profileImage, $userId) {
+        $this->repository->setProfileImage($profileImage, $userId);
     }
 
     public function getProfileImage($userId){

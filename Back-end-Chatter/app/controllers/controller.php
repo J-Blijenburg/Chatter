@@ -8,9 +8,10 @@ use \Firebase\JWT\Key;
 
 class Controller
 {
-    function checkForJwt() {
-         // Check for token header
-         if(!isset($_SERVER['HTTP_AUTHORIZATION'])) {
+    function checkForJwt()
+    {
+        // Check for token header
+        if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
             $this->respondWithError(401, "No token provided");
             return;
         }
@@ -62,7 +63,7 @@ class Controller
 
         $object = new $className();
         foreach ($data as $key => $value) {
-            if(is_object($value)) {
+            if (is_object($value)) {
                 continue;
             }
             $object->{$key} = $value;
@@ -70,12 +71,15 @@ class Controller
         return $object;
     }
 
-    public function createObjectFromPostedFile($className, $fieldName) {
-        $object = new $className();
-        if(isset($_FILES[$fieldName]) && $_FILES[$fieldName]['error'] == UPLOAD_ERR_OK) {
+    public function createObjectFromPostedFile($className, $fieldName)
+    {
+    
+        if (isset($_FILES[$fieldName]) && $_FILES[$fieldName]['error'] == UPLOAD_ERR_OK) {
             $file = $_FILES[$fieldName]['tmp_name'];
-            $object->image = file_get_contents($file);
+            $image = file_get_contents($file);
+        } else {
+            $image = null;
         }
-        return $object;
+        return $image;
     }
 }

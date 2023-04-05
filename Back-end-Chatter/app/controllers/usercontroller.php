@@ -5,6 +5,7 @@ namespace Controllers;
 use Exception;
 use Services\UserService;
 use \Firebase\JWT\JWT;
+use Models\User;
 
 class UserController extends Controller
 {
@@ -160,10 +161,11 @@ class UserController extends Controller
         $jwtValues = $token->data;
 
         $this->service->delete($jwtValues->id);
-        return$this->respond("User deleted");
+        return $this->respond("User deleted");
     }
 
-    public function updateProfileSettings(){
+    public function updateProfileSettings()
+    {
         $user = $this->createObjectFromPostedJson("Models\\User");
 
         $this->service->updateProfileSettings($user);
@@ -171,32 +173,37 @@ class UserController extends Controller
         $this->respond("User updated");
     }
 
-    public function setProfileImage(){
-        try{
+    public function setProfileImage()
+    {
+        try {
             // Checks for a valid jwt, returns 401 if none is found
             $token = $this->checkForJwt();
             if (!$token)
                 return;
 
-
             $jwtValues = $token->data;
-            
-            $image = $this->createObjectFromPostedFile("Models\\Image", 'image');
+
+            $image = $this->createObjectFromPostedFile("Models\\User", 'image');
+
+            if ($image == null) {
+                $this->respondWithError(500, "No image found");
+            } else {
+                $encodedImage = base64_encode($image);
+
+                $this->service->setProfileImage($encodedImage, $jwtValues->id);
+
+                $this->respond('Profile image updated successfully');
+            }
 
 
-            $createdImage = $this->service->createImage(base64_encode($image->image));
-
-
-            $this->service->setProfileImage($createdImage, $jwtValues->id);
-
-            $this->respond($createdImage);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
     }
 
-    public function getProfileImage(){
-        try{
+    public function getProfileImage()
+    {
+        try {
             // Checks for a valid jwt, returns 401 if none is found
             $token = $this->checkForJwt();
             if (!$token)
@@ -211,5 +218,5 @@ class UserController extends Controller
             $this->respondWithError(500, $e->getMessage());
         }
     }
-    
+
 }
