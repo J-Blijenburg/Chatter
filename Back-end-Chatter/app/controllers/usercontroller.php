@@ -75,7 +75,8 @@ class UserController extends Controller
             "data" => array(
                 "id" => $user->id,
                 "username" => $user->username,
-                "email" => $user->email
+                "email" => $user->email,
+                "imageId" => $user->imageId
             )
         );
 
@@ -148,13 +149,7 @@ class UserController extends Controller
             return;
         }
 
-
-
-        // Merge the JWT values with the user data and send the response
-        $response = array(
-            "data" => $user
-        );
-        $this->respond($response);
+        $this->respond($user);
     }
 
     public function delete()
@@ -211,14 +206,14 @@ class UserController extends Controller
     public function getProfileImage()
     {
         try {
-            // Checks for a valid jwt, returns 401 if none is found
+            //Checks for a valid jwt, returns 401 if none is found
             $token = $this->checkForJwt();
             if (!$token)
                 return;
 
             $jwtValues = $token->data;
 
-            $image = $this->service->getProfileImage($jwtValues->id);
+            $image = $this->service->getProfileImage($jwtValues->imageId);
 
             $this->respond($image);
         } catch (Exception $e) {

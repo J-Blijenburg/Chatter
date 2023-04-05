@@ -14,7 +14,7 @@ class UserRepository extends Repository
     {
         try {
             // retrieve the user with the given username
-            $stmt = $this->connection->prepare("SELECT id, username, password FROM users WHERE username = :username");
+            $stmt = $this->connection->prepare("SELECT id, username, password, email, imageId FROM users WHERE username = :username");
             $stmt->bindParam(':username', $username);
             $stmt->execute();
 
@@ -38,9 +38,6 @@ class UserRepository extends Repository
                 // password does not match
                 return false;
             }
-
-            // do not return sensitive information
-            $user->email = "";
 
             return $user;
         } catch (PDOException $e) {
@@ -79,12 +76,11 @@ class UserRepository extends Repository
     function getOne($id)
     {
         try {
-            $query = "SELECT id, username, password, email, profileImage FROM users WHERE id = :id";
+            $query = "SELECT id, username, password, email, imageId FROM users WHERE id = :id";
             $stmt = $this->connection->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $row = $stmt->fetch();
             $user = $this->rowToUser($row);
 
@@ -101,7 +97,7 @@ class UserRepository extends Repository
         $user->username = $row['username'];
         $user->password = $row['password'];
         $user->email = $row['email'];
-        $user->profileImage = $row['profileImage'];
+        $user->imageId = $row['imageId'];
         return $user;
     }
 
@@ -183,15 +179,15 @@ class UserRepository extends Repository
         }
     }
 
-    public function getProfileImage($userId)
+    public function getProfileImage($imageId)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT profileImage FROM users WHERE id = :id");
-            $stmt->bindParam(':id', $userId);
+            $stmt = $this->connection->prepare("SELECT images FROM images WHERE id = :id");
+            $stmt->bindParam(':id', $imageId);
             $stmt->execute();
             $image = $stmt->fetch();
 
-            $extraImage = "data:image/jpeg;base64," . base64_encode($image['profileImage']);
+            $extraImage = "data:image/jpeg;base64," . base64_encode($image['images']);
             return $extraImage;
         } catch (PDOException $e) {
             echo $e;

@@ -27,10 +27,10 @@
                         <div class="profileItemSettings">
                             <div class="imageLayout">
                                 <div class="profileImageContainer">
-                                    <img :src="image" class="image" alt="stukkie tekst" />
+                                    <img :src="profileImage" class="image" alt="stukkie tekst" />
                                 </div>
 
-                                <button>Change Profile</button>
+                                <button>Change Profile Picture</button>
                             </div>
                         </div>
                     </div>
@@ -61,9 +61,9 @@ export default {
                 email: "",
                 id: "",
                 password: "",
-                image: ""
+                imageId: ""
             },
-            image: ""
+            profileImage: "",
 
         }
     },
@@ -79,10 +79,12 @@ export default {
                 },
             })
                 .then((res) => {
-                    this.user.username = res.data.data.username;
-                    this.user.email = res.data.data.email;
-                    this.user.id = res.data.data.id;
-                    this.user.password = res.data.data.password;
+                    this.user.username = res.data.username;
+                    this.user.email = res.data.email;
+                    this.user.id = res.data.id;
+                    this.user.password = res.data.password;
+                    this.user.imageId = res.data.imageId;
+                    console.log(res.data.imageId);
                 })
                 .catch((error) => console.log(error));
         },
@@ -120,8 +122,7 @@ export default {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 }
             }).then((res) => {
-                this.image = res.data;
-                console.log(res.data);
+                this.profileImage = res.data;
             })
                 .catch((err) => {
                     console.log(err);
