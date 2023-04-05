@@ -9,29 +9,30 @@
                 <div class="changeProfileSettings">
                     <div class="settingsAndProfileImage">
                         <div class="profileItemSettings">
-                            <div class="layoutProfileSettings">
-                                <h6>Username</h6>
-                                <input type="text" v-model="user.username">
+                            <div>
+                                <div class="layoutProfileSettings">
+                                    <h6>Username</h6>
+                                    <input type="text" v-model="user.username">
+                                </div>
+                                <div class="layoutProfileSettings">
+                                    <h6>Email</h6>
+                                    <input type="text" v-model="user.email">
+                                </div>
+                                <div class="layoutProfileSettings">
+                                    <h6>Password</h6>
+                                    <input type="password" placeholder="Password" id="ChangePassword">
+                                </div>
                             </div>
-                            <div class="layoutProfileSettings">
-                                <h6>Email</h6>
-                                <input type="text" v-model="user.email">
-                            </div>
-                            <div class="layoutProfileSettings">
-                                <h6>Password</h6>
-                                <input type="password" placeholder="Password" id="ChangePassword">
-                            </div>
+
 
                             <button @click="changeProfileSettings()" class="btnEditUser">Change</button>
                         </div>
                         <div class="profileItemSettings">
-                            <div class="imageLayout">
-                                <div class="profileImageContainer">
-                                    <img :src="profileImage" class="image" alt="stukkie tekst" />
-                                </div>
-
-                                <button>Change Profile Picture</button>
+                            <div class="profileImageContainer">
+                                <img :src="profileImage" class="image" alt="stukkie tekst" />
                             </div>
+
+                            <button class="btnChangeProfilePicture">Change Profile Picture</button>
                         </div>
                     </div>
                     <div class="removeUser">
