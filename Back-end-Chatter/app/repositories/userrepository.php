@@ -136,7 +136,20 @@ class UserRepository extends Repository
             echo $e;
         }
     }
+    
+    public function updateUsername($user)
+    {
+        try {
+            $stmt = $this->connection->prepare("UPDATE users SET username = :username WHERE id = :id");
+            $stmt->bindParam(':id', $user->id);
+            $stmt->bindParam(':username', $user->username);
+            $stmt->execute();
 
+
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
     public function updateProfileSettings($user)
     {
         try {

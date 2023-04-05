@@ -166,14 +166,17 @@ class UserController extends Controller
         return $this->respond("User deleted");
     }
 
-    public function updateProfileSettings()
-    {
+    //update the username of the user
+    public function updateUsername(){
         $user = $this->createObjectFromPostedJson("Models\\User");
 
-        $this->service->updateProfileSettings($user);
+        $this->service->updateUsername($user);
 
         $this->respond("User updated");
     }
+
+
+
 
     public function setProfileImage()
     {

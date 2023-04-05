@@ -9,23 +9,27 @@
                 <div class="changeProfileSettings">
                     <div class="settingsAndProfileImage">
                         <div class="profileItemSettings">
-                            <div>
-                                <div class="layoutProfileSettings">
-                                    <h6>Username</h6>
-                                    <input type="text" v-model="user.username">
-                                </div>
-                                <div class="layoutProfileSettings">
-                                    <h6>Email</h6>
-                                    <input type="text" v-model="user.email">
-                                </div>
-                                <div class="layoutProfileSettings">
-                                    <h6>Password</h6>
-                                    <input type="password" placeholder="Password" id="ChangePassword">
+                            <div class="layoutProfileSettings">
+                                <h6>Username</h6>
+                                <div class="input-group">
+                                    <input type="text" class="textFields" placeholder="Username" id="txtUsername">
+                                    <button @click="ChangeUsername()" class="btnEditUser">Change</button>
                                 </div>
                             </div>
-
-
-                            <button @click="changeProfileSettings()" class="btnEditUser">Change</button>
+                            <div class="layoutProfileSettings">
+                                <h6>Email</h6>
+                                <div class="input-group">
+                                    <input type="text" class="textFields" placeholder="Email" id="txtEmail">
+                                    <button @click="changeProfileSettings()" class="btnEditUser">Change</button>
+                                </div>
+                            </div>
+                            <div class="layoutProfileSettings">
+                                <h6>Password</h6>
+                                <div class="input-group">
+                                    <input type="text" class="textFields" placeholder="Password" id="txtPassword">
+                                    <button @click="changeProfileSettings()" class="btnEditUser">Change</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="profileItemSettings">
                             <div class="profileImageContainer">
@@ -88,15 +92,43 @@ export default {
                 })
                 .catch((error) => console.log(error));
         },
-        changeProfileSettings() {
+        ChangeUsername() {
+            axios.put("http://localhost/users/updateUsername", {
+                id: this.user.id,
+                username: document.getElementById('txtUsername').value,
+            })
+                .then((res) => {
+                    alert(document.getElementById('txtUsername').value + " is changed");
+                    this.$router.push("/profile");
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        },
+        ChangeEmail() {
             axios.put("http://localhost/users/changeProfileSettings", {
                 id: this.user.id,
                 username: this.user.username,
                 email: this.user.email,
-                password: document.getElementById("ChangePassword").value,
+                password: document.getElementById(changedItem).value,
             })
                 .then((res) => {
-                    alert(document.getElementById("ChangePassword").value);
+                    alert(document.getElementById(changedItem).value);
+                    this.$router.push("/profile");
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        },
+        ChangePassword() {
+            axios.put("http://localhost/users/changeProfileSettings", {
+                id: this.user.id,
+                username: this.user.username,
+                email: this.user.email,
+                password: document.getElementById(changedItem).value,
+            })
+                .then((res) => {
+                    alert(document.getElementById(changedItem).value);
                     this.$router.push("/profile");
                 })
                 .catch((err) => {

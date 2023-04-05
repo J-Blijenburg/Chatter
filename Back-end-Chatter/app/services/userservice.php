@@ -33,8 +33,8 @@ class UserService {
         $this->repository->delete($userId);
     }
 
-    public function updateProfileSettings($user) {
-        $this->repository->updateProfileSettings($user);
+    public function updateUsername($user) {
+        $this->repository->updateUsername($user);
     }
 
     public function createImage($image){
