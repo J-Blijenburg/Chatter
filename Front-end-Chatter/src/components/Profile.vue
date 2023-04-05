@@ -35,13 +35,11 @@
                             <div class="profileImageContainer">
                                 <img :src="profileImage" class="image" alt="stukkie tekst" />
                             </div>
-
-                            <button class="btnChangeProfilePicture">Change Profile Picture</button>
                             <div class="uploadFile">
-                                <label>File 
+                                <label>
                                     <input type="file" id="file">
                                 </label>
-                                <button v-on:click="uploadImage()">Upload</button>
+                                <button class="btnChangeProfilePicture" v-on:click="uploadImage()">Upload</button>
                             </div>
                         </div>
                     </div>
@@ -95,7 +93,7 @@ export default {
                     this.user.username = res.data.username;
                     this.user.email = res.data.email;
                     this.user.id = res.data.id;
-                    this.user.password = res.data.password;
+                    this.user.password = res.data.password
                 })
                 .catch((error) => console.log(error));
         },
