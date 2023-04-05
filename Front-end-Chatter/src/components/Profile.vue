@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="profileItemSettings">
+                        <div class="profileItemSettings" id="profilesetting">
                             <div class="profileImageContainer">
                                 <img :src="profileImage" class="image" alt="stukkie tekst" />
                             </div>

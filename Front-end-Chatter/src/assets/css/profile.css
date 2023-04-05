@@ -102,3 +102,8 @@
 .textFields{
     width: 100%;
 }
+
+#profilesetting{
+    display: flex;
+    justify-content: space-between;
+}
