@@ -17,31 +17,31 @@ class UserRepository extends Repository
             $stmt = $this->connection->prepare("SELECT id, username, password FROM users WHERE username = :username");
             $stmt->bindParam(':username', $username);
             $stmt->execute();
-    
+
             $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\User');
             $user = $stmt->fetch();
-    
+
             if (!$user) {
                 // user not found
                 return false;
             }
-    
+
             // verify if the password matches the hash in the database
             $stmt = $this->connection->prepare("SELECT password FROM users WHERE id = :id");
             $stmt->bindParam(':id', $user->id);
             $stmt->execute();
-    
+
             $hash = $stmt->fetchColumn();
             $result = $this->verifyPassword($password, $hash);
-    
+
             if (!$result) {
                 // password does not match
                 return false;
             }
-    
+
             // do not return sensitive information
             $user->email = "";
-    
+
             return $user;
         } catch (PDOException $e) {
             throw new Exception("Error checking username and password: " . $e->getMessage());
@@ -79,7 +79,7 @@ class UserRepository extends Repository
     function getOne($id)
     {
         try {
-            $query = "SELECT US.id, US.username, US.password, US.email, im.image FROM users AS US JOIN images AS im ON US.profileImageId = im.id WHERE US.id = :id";
+            $query = "SELECT id, username, password, email, profileImage FROM users WHERE id = :id";
             $stmt = $this->connection->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
@@ -101,7 +101,7 @@ class UserRepository extends Repository
         $user->username = $row['username'];
         $user->password = $row['password'];
         $user->email = $row['email'];
-        $user->profileImageId = $row['image'];
+        $user->profileImage = $row['profileImage'];
         return $user;
     }
 
@@ -149,7 +149,7 @@ class UserRepository extends Repository
             $stmt->bindParam(':id', $user->id);
             $stmt->bindParam(':username', $user->username);
             $stmt->bindParam(':email', $user->email);
-            $stmt->bindParam(':password',$hashedPasword);
+            $stmt->bindParam(':password', $hashedPasword);
             $stmt->execute();
 
 
@@ -158,7 +158,8 @@ class UserRepository extends Repository
         }
     }
 
-    public function createImage($image){
+    public function createImage($image)
+    {
         try {
             $stmt = $this->connection->prepare("INSERT INTO images (image) VALUES (:image)");
             $stmt->bindParam(':image', $image);
@@ -170,7 +171,8 @@ class UserRepository extends Repository
         }
     }
 
-    public function setProfileImage($profileImage, $userId){
+    public function setProfileImage($profileImage, $userId)
+    {
         try {
             $stmt = $this->connection->prepare("UPDATE users SET profileImage = :profileImage WHERE id = :id");
             $stmt->bindParam(':id', $userId);
@@ -181,14 +183,16 @@ class UserRepository extends Repository
         }
     }
 
-    public function getProfileImage($userId){
+    public function getProfileImage($userId)
+    {
         try {
-            $stmt = $this->connection->prepare("SELECT IM.id,  IM.image FROM users AS US JOIN images AS IM ON US.profileImageID = IM.id WHERE US.id = :id");
+            $stmt = $this->connection->prepare("SELECT profileImage FROM users WHERE id = :id");
             $stmt->bindParam(':id', $userId);
             $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\User');
             $image = $stmt->fetch();
-            return $image;
+
+            $extraImage = "data:image/jpeg;base64," . base64_encode($image['profileImage']);
+            return $extraImage;
         } catch (PDOException $e) {
             echo $e;
         }

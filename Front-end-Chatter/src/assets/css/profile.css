@@ -27,10 +27,10 @@
     justify-content: center;
     flex-direction: column;
     width: 40%;
-    height: 50%;
     gap: 20px;
     padding: 2.5%;
     border: 1px black solid;
+    min-height: 60%;
 }
 .layoutProfileSettings{
     display: flex;
@@ -59,3 +59,33 @@
     background-color: rgb(201, 39, 39);
 }
 
+.settingsAndProfileImage{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.imageLayout{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+.profileImageContainer{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 90%;
+    max-width: 90%;
+    flex-wrap: wrap;
+    flex-direction: column;
+}

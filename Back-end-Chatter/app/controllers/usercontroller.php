@@ -143,6 +143,13 @@ class UserController extends Controller
         // Get the user with the id from the JWT
         $user = $this->service->getOne($jwtValues->id);
 
+        if (!$user) {
+            $this->respondWithError(404, "User not found");
+            return;
+        }
+
+
+
         // Merge the JWT values with the user data and send the response
         $response = array(
             "data" => $user

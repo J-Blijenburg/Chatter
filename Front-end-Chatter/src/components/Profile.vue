@@ -7,39 +7,38 @@
             </div>
             <div class="baseProfileBody">
                 <div class="changeProfileSettings">
-                    <div class="profileItemSettings">
-                        <div class="layoutProfileSettings">
-                            <h6>Username</h6>
-                            <input type="text" v-model="user.username">
-                        </div>
-                        <div class="layoutProfileSettings">
-                            <h6>Email</h6>
-                            <input type="text" v-model="user.email">
-                        </div>
-                        <div class="layoutProfileSettings">
-                            <h6>Password</h6>
-                            <input type="password" placeholder="Password" id="ChangePassword">
-                        </div>
+                    <div class="settingsAndProfileImage">
+                        <div class="profileItemSettings">
+                            <div class="layoutProfileSettings">
+                                <h6>Username</h6>
+                                <input type="text" v-model="user.username">
+                            </div>
+                            <div class="layoutProfileSettings">
+                                <h6>Email</h6>
+                                <input type="text" v-model="user.email">
+                            </div>
+                            <div class="layoutProfileSettings">
+                                <h6>Password</h6>
+                                <input type="password" placeholder="Password" id="ChangePassword">
+                            </div>
 
-                        <button @click="changeProfileSettings()" class="btnEditUser">Change</button>
+                            <button @click="changeProfileSettings()" class="btnEditUser">Change</button>
+                        </div>
+                        <div class="profileItemSettings">
+                            <div class="imageLayout">
+                                <div class="profileImageContainer">
+                                    <img :src="image" class="image" alt="stukkie tekst" />
+                                </div>
+
+                                <button>Change Profile</button>
+                            </div>
+                        </div>
                     </div>
-
                     <div class="removeUser">
                         <button @click="removeUser()" class="removeUserButton">Delete account</button>
                     </div>
-                </div>
-                <div>
-                    <div>
-                        <div>
-                            <h1>dsa</h1>
-                            <img class="image" :src="user.image" alt="">
-                        </div>
 
-                        <div class="profileImage">
-                            <input type="file" id="file" ref="file" @change="onFileChange" class="inputfile" />
-                            <label for="file">Choose a file</label>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -63,11 +62,14 @@ export default {
                 id: "",
                 password: "",
                 image: ""
-            }
+            },
+            image: ""
+
         }
     },
     mounted() {
         this.getOneUser();
+        this.getProfileImage();
     },
     methods: {
         getOneUser() {
@@ -81,8 +83,6 @@ export default {
                     this.user.email = res.data.data.email;
                     this.user.id = res.data.data.id;
                     this.user.password = res.data.data.password;
-                    this.user.image = 'data:image/jpeg;base64,' + btoa(res.data.data.image);
-                    console.log(this.user.image);
                 })
                 .catch((error) => console.log(error));
         },
@@ -114,7 +114,20 @@ export default {
                 .catch((err) => {
                     console.log(err);
                 })
+        }, getProfileImage() {
+            axios.get("http://localhost/users/getProfileImage", {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                }
+            }).then((res) => {
+                this.image = res.data;
+                console.log(res.data);
+            })
+                .catch((err) => {
+                    console.log(err);
+                })
         }
+
     }
 
 
