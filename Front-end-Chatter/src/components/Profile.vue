@@ -34,7 +34,7 @@
                         </div>
                         <div class="profileItemSettings" id="profilesetting">
                             <div class="profileImageContainer">
-                                <img :src="profileImage" class="image" alt="stukkie tekst" />
+                                <img :src="profileImage" class="profileImage" alt="stukkie tekst" />
                             </div>
                             <div class="uploadFile">
                                 <label>

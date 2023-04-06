@@ -171,7 +171,10 @@ class FriendsRepository extends Repository
 
     //remove every thing between the two users, so that they are not friends anymore
     public function removeFriendship($userId, $friendId){
-       
+       $stmt = $this->connection->prepare("DELETE FROM friends WHERE (firstUser = :userId AND secondUser = :friendId) OR (firstUser = :friendId AND secondUser = :userId)");
+       $stmt->bindParam(':userId', $userId);
+       $stmt->bindParam(':friendId', $friendId);
+       $stmt->execute();
     }
 
 

@@ -83,12 +83,13 @@ export default {
                     console.log(err);
                 })
         }, removeFriendship(friendId) {
-            axios.delete("http://localhost/friends/removeFriendship/" + friendId, null, {
+            axios.delete("http://localhost/friends/removeFriendship/" + friendId, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token")
                 }
             }).then((res) => {
                 alert("Friendship over ;(");
+                window.location.reload();
             })
                 .catch((err) => {
                     console.log(err);

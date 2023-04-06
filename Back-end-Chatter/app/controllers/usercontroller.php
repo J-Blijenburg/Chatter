@@ -274,7 +274,7 @@ class UserController extends Controller
             return;
         }
 
-        $targetFile = 'uploads/' . basename($_FILES['file']['name']);
+        $targetFile = 'upload/' . basename($_FILES['file']['name']);
 
         if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
             $imageId = $this->service->uploadImage($targetFile);
