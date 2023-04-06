@@ -9,7 +9,7 @@
                 <div class="addUser">
                     <h3 class="addFriendTitle">Add Friend</h3>
                     <div id="addFriendInputField" class="input-group">
-                        <input v-model="secondUser" type="number" class="form-control"
+                        <input v-model="secondUser" type="text" class="form-control"
                             placeholder="Enter user id of your friend">
                         <button @click="addFriend()" class="btn btn-primary" type="button" id="button-addon2">Send</button>
                     </div>

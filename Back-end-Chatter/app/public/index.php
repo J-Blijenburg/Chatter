@@ -32,7 +32,7 @@ $router->post('/images/uploadImage', 'UserController@uploadImage');
 $router->get('/friends/getFriendsByUserId', 'FriendsController@getFriendsByUserId');
 $router->get('/friends/getChatFriendsByUserId', 'FriendsController@getChatFriendsByUserId');
 $router->put('/friends/startChat/(\d+)', 'FriendsController@updateFriendsChatStatus');
-$router->post('/friends/addFriend/(\d+)', 'FriendsController@addFriend');
+$router->post('/friends/addFriend/([a-zA-Z]+)', 'FriendsController@addFriend');
 $router->post('/friends/addRandomUser', 'FriendsController@addRandomUser');
 
 //routes for the messages endpoint

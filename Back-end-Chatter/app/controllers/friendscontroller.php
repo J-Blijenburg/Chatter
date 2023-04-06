@@ -73,7 +73,7 @@ class friendsController extends Controller
 
     }
 
-    public function addFriend($friendId)
+    public function addFriend($friendUsername)
     {
         try {
             // Checks for a valid jwt, returns 401 if none is found
@@ -84,6 +84,7 @@ class friendsController extends Controller
             // Extract and return the values from the decoded JWT token
             $jwtValues = $token->data;
             
+            $friendId = $this->service->getFriendIdByUsername($friendUsername);
 
             $friends = $this->service->insert($jwtValues->id, $friendId);
             

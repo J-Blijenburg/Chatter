@@ -142,5 +142,18 @@ class FriendsRepository extends Repository
         return $friends;
     }
 
+    public function getFriendIdByUsername($friendUsername){
+        try {
+            $stmt = $this->connection->prepare("SELECT id FROM users WHERE username = :username");
+            $stmt->bindParam(':username', $friendUsername);
+            $stmt->execute();
+
+            $row = $stmt->fetch();
+            return $row['id'];
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
 
 }

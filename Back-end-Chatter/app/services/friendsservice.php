@@ -33,6 +33,12 @@ class FriendsService
         return $this->repository->insert($firstUser, $secondUser);
     }
 
+    //get the friendId from the repository and return it to the controller
+    public function getFriendIdByUsername($friendUsername)
+    {
+        return $this->repository->getFriendIdByUsername($friendUsername);
+    }
+
     public function insertRandomFriendship($userId)
     {
        return $this->repository->insertRandomFriendship($userId);
