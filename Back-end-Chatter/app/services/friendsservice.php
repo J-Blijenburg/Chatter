@@ -43,6 +43,10 @@ class FriendsService
     {
        return $this->repository->insertRandomFriendship($userId);
     }
+
+    public function getProfileImagesByFriendId($friendId){
+        return $this->repository->getProfileImagesByFriendId($friendId);
+    }
 }
 
 ?>

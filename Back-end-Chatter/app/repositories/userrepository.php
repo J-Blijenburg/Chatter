@@ -225,11 +225,11 @@ class UserRepository extends Repository
         }
     }
 
-    public function getProfileImage($imageId)
+    public function getProfileImage($userId)
     {
         try {
             $stmt = $this->connection->prepare("SELECT IM.images FROM `users` AS US JOIN images AS IM ON US.imageId = IM.id WHERE US.id = :id");
-            $stmt->bindParam(':id', $imageId);
+            $stmt->bindParam(':id', $userId);
             $stmt->execute();
             $image = $stmt->fetch();
 

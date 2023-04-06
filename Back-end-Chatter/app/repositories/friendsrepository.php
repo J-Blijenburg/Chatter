@@ -155,5 +155,19 @@ class FriendsRepository extends Repository
         }
     }
 
+    public function getProfileImagesByFriendId($friendId){
+        try {
+            $stmt = $this->connection->prepare("SELECT IM.images FROM `users` AS US JOIN images AS IM ON US.imageId = IM.id WHERE US.id = :id");
+            $stmt->bindParam(':id', $friendId);
+            $stmt->execute();
+            $image = $stmt->fetch();
+
+            $extraImage = "data:image/jpeg;base64," . base64_encode($image['images']);
+            return $extraImage;
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
 
 }

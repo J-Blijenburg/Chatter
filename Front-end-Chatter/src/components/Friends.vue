@@ -9,11 +9,14 @@
                 <div id="friendsListItems" v-if="users.length > 0">
                     <ul class="list-group" id="friendsList">
                         <li id="singleFriendList" class="list-group-item" v-for="user in users" :key="user.id">
+                            {{ getProfileImagesByFriendId(user.id) }}
                             <div class="friendImageUsername">
                                 <div class="friendImage">
-                                    test
+                                    <img :src="profileImage" class="image" />
                                 </div>
-                                {{ user.username }}
+                                <p>
+                                    {{ user.username }}
+                                </p>
                             </div>
 
                             <button @click="StartChat(user.id)" class="btn btn-primary btn-sm float-right">Chat</button>
@@ -37,6 +40,7 @@ export default {
     data() {
         return {
             users: [],
+            profileImage: "",
         };
     },
     mounted() {
@@ -64,6 +68,14 @@ export default {
                     this.$router.push("/chats");
                 })
                 .catch((error) => console.log(error));
+        }, getProfileImagesByFriendId(friendId) {
+            axios.get("http://localhost/friends/getProfileImagesByFriendId/" + friendId)
+            .then((res) => {
+                this.profileImage = res.data;
+            })
+                .catch((err) => {
+                    console.log(err);
+                })
         },
     }
 

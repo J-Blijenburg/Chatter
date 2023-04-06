@@ -118,5 +118,18 @@ class friendsController extends Controller
         }
     }
 
+    public function getProfileImagesByFriendId($friendId){
+        try {
+            //Checks for a valid jwt, returns 401 if none is found
+            
+            $image = $this->service->getProfileImagesByFriendId($friendId);
+
+            $this->respond($image);
+
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+    }
+
     
 }
