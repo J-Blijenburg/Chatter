@@ -131,5 +131,22 @@ class friendsController extends Controller
         }
     }
 
+    //remove the friendship between two users
+    public function removeFriendship($friendId){
+        try {
+            // Checks for a valid jwt, returns 401 if none is found
+            $token = $this->checkForJwt();
+            if (!$token)
+                return;
+
+            // Extract and return the values from the decoded JWT token
+            $jwtValues = $token->data;
+
+            $this->service->removeFriendship($jwtValues->id, $friendId);
+        } catch (Exception $e) {
+            $this->respondWithError($e->getCode(), $e->getMessage());
+        }
+    }
+
     
 }

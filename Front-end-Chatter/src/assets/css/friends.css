@@ -12,7 +12,7 @@
 }
 
 #friendsList {
-    width: 50%;
+    width: 75%;
     display: flex;
     justify-content: center;
 }
@@ -41,4 +41,9 @@
     max-height: 50px;
     min-width: 50px;
     min-height: 50px;
+}
+
+.btnFriendsOptions{
+    display: flex;
+    gap: 10px;
 }

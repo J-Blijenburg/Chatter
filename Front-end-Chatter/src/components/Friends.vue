@@ -16,7 +16,13 @@
                                 {{ user.username }}
                             </div>
 
-                            <button @click="StartChat(user.id)" class="btn btn-primary btn-sm float-right">Chat</button>
+                            <div class="btnFriendsOptions">
+                                <button @click="StartChat(user.id)" class="btn btn-primary btn-sm float-right">Chat</button>
+                                <button @click="removeFriendship(user.id)" class="btn btn-danger btn-sm float-right">Remove
+                                    <br>
+                                    Friend</button>
+                            </div>
+
                         </li>
                     </ul>
                 </div>
@@ -70,13 +76,24 @@ export default {
                 .catch((error) => console.log(error));
         }, getProfileImagesByFriendId(friendId) {
             axios.get("http://localhost/friends/getProfileImagesByFriendId/" + friendId)
-            .then((res) => {
-                this.profileImage[friendId] = res.data;
+                .then((res) => {
+                    this.profileImage[friendId] = res.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        }, removeFriendship(friendId) {
+            axios.delete("http://localhost/friends/removeFriendship/" + friendId, null, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                }
+            }).then((res) => {
+                alert("Friendship over ;(");
             })
                 .catch((err) => {
                     console.log(err);
                 })
-        },
+        }
     }
 
 

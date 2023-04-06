@@ -35,6 +35,7 @@ $router->get('friends/getProfileImagesByFriendId/(\d+)', 'FriendsController@getP
 $router->put('/friends/startChat/(\d+)', 'FriendsController@updateFriendsChatStatus');
 $router->post('/friends/addFriend/([a-zA-Z]+)', 'FriendsController@addFriend');
 $router->post('/friends/addRandomUser', 'FriendsController@addRandomUser');
+$router->delete('/friends/removeFriendship/(\d+)', 'FriendsController@removeFriendship');
 
 
 //routes for the messages endpoint

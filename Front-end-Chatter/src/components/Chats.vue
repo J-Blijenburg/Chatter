@@ -12,7 +12,7 @@
                             <ul class="list-group">
                                 <li class="list-group-item" v-for="user in users" :key="user.id"
                                     :class="{ 'active': selectedUser === user.id }"
-                                    @click="selectedUser = user.id, getChatWithFriend()">
+                                    @click="selectedUser = user.id, getChatWithFriend(), disabled = (disabled + 1) % 2">
                                     {{ user.username }}
                                 </li>
                             </ul>
@@ -40,8 +40,8 @@
                                     </div>
                                     <form>
                                         <div class="input-group mb-3">
-                                            <input @keydown.enter.prevent="sendMessage()" type="text" class="form-control"
-                                                placeholder="Enter text message...">
+                                            <input :disabled="disabled != 1" @keydown.enter.prevent="sendMessage()" type="text" class="form-control"
+                                                placeholder="Enter text message..." >
                                             <button @click="sendMessage()" class="btn btn-primary" type="button"
                                                 id="button-addon2">Send</button>
                                         </div>
@@ -59,6 +59,7 @@
 </template>
     
 <script>
+
 import axios from 'axios';
 import Navigation from './Navigation.vue'
 
@@ -68,12 +69,15 @@ export default {
         Navigation
     },
     data() {
+        
         return {
             users: [],
             message: [],
             selectedUser: '',
-            hoveredUser: ''
+            hoveredUser: '',
+            disabled: 0
         }
+        
     },
     mounted() {
         this.getFriends();

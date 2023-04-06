@@ -47,6 +47,11 @@ class FriendsService
     public function getProfileImagesByFriendId($friendId){
         return $this->repository->getProfileImagesByFriendId($friendId);
     }
+
+    //remove the friendship between the two users
+    public function removeFriendship($userId, $friendId){
+        $this->repository->removeFriendship($userId, $friendId);
+    }
 }
 
 ?>

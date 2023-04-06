@@ -169,5 +169,10 @@ class FriendsRepository extends Repository
         }
     }
 
+    //remove every thing between the two users, so that they are not friends anymore
+    public function removeFriendship($userId, $friendId){
+       
+    }
+
 
 }
