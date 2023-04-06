@@ -36,7 +36,8 @@ export default {
                     this.$router.push("/start");
                 })
                 .catch((error) => {
-                    document.getElementById("errorMessage").innerHTML = "Username or password is incorrect";
+                    document.getElementById("errorMessage").innerHTML = error.response.data.errorMessage;
+
                     console.log(error)
                 }
                 );

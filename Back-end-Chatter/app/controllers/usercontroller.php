@@ -21,13 +21,14 @@ class UserController extends Controller
     {
         try {
             $user = $this->createObjectFromPostedJson("Models\\User");
+            $this->checkInput($user);
             $user = $this->service->insert($user);
-
+            $this->respond($user);
         } catch (Exception $e) {
-            $this->respondWithError(500, $e->getMessage());
+            $this->respondWithError($e->getCode(), $e->getMessage());
         }
 
-        $this->respond($user);
+
     }
 
     public function login()
@@ -169,28 +170,47 @@ class UserController extends Controller
     //update the username of the user
     public function updateUsername()
     {
-        $user = $this->createObjectFromPostedJson("Models\\User");
-
-        $this->service->updateUsername($user);
-
-        $this->respond("User updated");
+        try {
+            $user = $this->createObjectFromPostedJson("Models\\User");
+            $this->checkInput($user->username);
+            $this->service->updateUsername($user);
+            $this->respond("User updated");
+        } catch (Exception $e) {
+            $this->respondWithError($e->getCode(), $e->getMessage());
+        }
     }
     public function updateEmail()
     {
-        $user = $this->createObjectFromPostedJson("Models\\User");
-
-        $this->service->updateEmail($user);
-
-        $this->respond("User updated");
+        try {
+            $user = $this->createObjectFromPostedJson("Models\\User");
+            $this->checkInput($user->email);
+            $this->service->updateEmail($user);
+            $this->respond("User updated");
+        } catch (Exception $e) {
+            $this->respondWithError($e->getCode(), $e->getMessage());
+        }
     }
+
+    
 
     public function updatePassword()
     {
-        $user = $this->createObjectFromPostedJson("Models\\User");
+        try {
+            $user = $this->createObjectFromPostedJson("Models\\User");
+            $this->checkInput($user->password);
+            $this->service->updatePassword($user);
+            $this->respond("User updated");
+        } catch (Exception $e) {
+            $this->respondWithError($e->getCode(), $e->getMessage());
+        }
+    }
 
-        $this->service->updatePassword($user);
-
-        $this->respond("User updated");
+    //check if input is not empty
+    public function checkInput($input)
+    {
+        if (empty($input)) {
+            throw new Exception("Input is empty", 400);
+        }        
     }
 
 
@@ -278,7 +298,7 @@ class UserController extends Controller
             $this->respondWithError(500, "Failed to upload file");
         }
     }
-    
+
 
 
 }

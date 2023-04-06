@@ -30,6 +30,7 @@
                                     <button @click="ChangePassword()" class="btnEditUser">Change</button>
                                 </div>
                             </div>
+                            <label id="errorMessage"></label>
                         </div>
                         <div class="profileItemSettings" id="profilesetting">
                             <div class="profileImageContainer">
@@ -103,11 +104,12 @@ export default {
                 username: document.getElementById('txtUsername').value,
             })
                 .then((res) => {
-                    alert(document.getElementById('txtUsername').value + " is changed");
-                    this.$router.push("/profile");
+                    alert("Username is changed");
+                    window.location.reload();
                 })
-                .catch((err) => {
-                    console.log(err);
+                .catch((error) => {
+                    document.getElementById("errorMessage").innerHTML = error.response.data.errorMessage;
+                    console.log(error);
                 })
         },
         ChangeEmail() {
@@ -116,11 +118,12 @@ export default {
                 email: document.getElementById('txtEmail').value,
             })
                 .then((res) => {
-                    alert(document.getElementById('txtEmail').value);
-                    this.$router.push("/profile");
+                    alert("Email is changed");
+                    window.location.reload();
                 })
-                .catch((err) => {
-                    console.log(err);
+                .catch((error) => {
+                    document.getElementById("errorMessage").innerHTML = error.response.data.errorMessage;
+                    console.log(error);
                 })
         },
         ChangePassword() {
@@ -129,10 +132,11 @@ export default {
                 password: document.getElementById('txtPassword').value,
             })
                 .then((res) => {
-                    alert(document.getElementById('txtPassword').value);
-                    this.$router.push("/profile");
+                    alert("Password is changed");
+                    window.location.reload();
                 })
-                .catch((err) => {
+                .catch((error) => {
+                    document.getElementById("errorMessage").innerHTML = error.response.data.errorMessage;
                     console.log(err);
                 })
         },

@@ -55,17 +55,43 @@ class UserRepository extends Repository
 
     function insert($user)
     {
-        try {
-            $stmt = $this->connection->prepare("INSERT into users (username, password, email, imageId) VALUES (?,?,?,?)");
-
-            $stmt->execute([$user->username, $this->hashPassword($user->password), $user->email, 1]);
-
-            $user->id = $this->connection->lastInsertId();
-
-            return $this->getOne($user->id);
-        } catch (PDOException $e) {
-            echo $e;
+        if (!($this->checkUsername($user->username))) {
+            throw new PDOException("Username already exists", 403);
+        } else if (!($this->checkEmail($user->email))) {
+            throw new PDOException("Email already exists", 403);
         }
+
+        $stmt = $this->connection->prepare("INSERT into users (username, password, email, imageId) VALUES (?,?,?,?)");
+
+        $stmt->execute([$user->username, $this->hashPassword($user->password), $user->email, 1]);
+
+        $user->id = $this->connection->lastInsertId();
+
+        return $this->getOne($user->id);
+    }
+
+    function checkUsername($username)
+    {
+        $stmt = $this->connection->prepare("SELECT username FROM users WHERE username = :username");
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        if ($stmt->rowCount() == 0) {
+            return true;
+        }
+        return false;
+
+    }
+
+    function checkEmail($email)
+    {
+        $stmt = $this->connection->prepare("SELECT email FROM users WHERE email = :email");
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        if ($stmt->rowCount() == 0) {
+            return true;
+        }
+        return false;
+
     }
 
     // hash the password (currently uses bcrypt)
@@ -136,33 +162,27 @@ class UserRepository extends Repository
             echo $e;
         }
     }
-    
+
     public function updateUsername($user)
     {
-        try {
-            $stmt = $this->connection->prepare("UPDATE users SET username = :username WHERE id = :id");
-            $stmt->bindParam(':id', $user->id);
-            $stmt->bindParam(':username', $user->username);
-            $stmt->execute();
-
-
-        } catch (PDOException $e) {
-            echo $e;
+        if (!($this->checkUsername($user->username))) {
+            throw new PDOException("Username already exists", 403);
         }
+        $stmt = $this->connection->prepare("UPDATE users SET username = :username WHERE id = :id");
+        $stmt->bindParam(':id', $user->id);
+        $stmt->bindParam(':username', $user->username);
+        $stmt->execute();
     }
 
     public function updateEmail($user)
     {
-        try {
-            $stmt = $this->connection->prepare("UPDATE users SET email = :email WHERE id = :id");
-            $stmt->bindParam(':id', $user->id);
-            $stmt->bindParam(':email', $user->email);
-            $stmt->execute();
-
-
-        } catch (PDOException $e) {
-            echo $e;
+        if (!($this->checkEmail($user->email))) {
+            throw new PDOException("Email already exists", 403);
         }
+        $stmt = $this->connection->prepare("UPDATE users SET email = :email WHERE id = :id");
+        $stmt->bindParam(':id', $user->id);
+        $stmt->bindParam(':email', $user->email);
+        $stmt->execute();
     }
 
     public function updatePassword($user)
@@ -220,7 +240,8 @@ class UserRepository extends Repository
         }
     }
 
-    public function updateProfileImage($imageId, $userId){
+    public function updateProfileImage($imageId, $userId)
+    {
         try {
             $stmt = $this->connection->prepare("UPDATE users SET imageId = :imageId WHERE id = :id");
             $stmt->bindParam(':id', $userId);
