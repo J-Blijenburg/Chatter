@@ -16,6 +16,9 @@
                                     {{ user.username }}
                                 </li>
                             </ul>
+                            <div>
+                                <button @click="getChatWithFriend()" class="BtnRefreshChats">Refresh Chats</button>
+                            </div>
                         </div>
                         <div class="col-md-9">
                             <div class="row">

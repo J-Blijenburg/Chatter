@@ -28,6 +28,9 @@
 #chatContacts {
     background-color: lightgrey;
     padding: 1%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
 }
 
 .chat-box {
@@ -86,3 +89,20 @@
     display: flex;
     flex-direction: column;
 }
+
+.BtnRefreshChats{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5%;
+    padding: 2.5%;
+    width: 100%;
+    background-color: #67a1f8;
+}
+
+
+.BtnRefreshChats:hover{
+    background-color: #0d6efd;
+}
+    
+
