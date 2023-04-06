@@ -177,5 +177,12 @@ class FriendsRepository extends Repository
        $stmt->execute();
     }
 
+    public function removeAllMessages($userId, $friendId){
+        $stmt = $this->connection->prepare("DELETE FROM messages WHERE (fromUser = :userId AND toUser = :friendId) OR (fromUser = :friendId AND toUser = :userId)");
+        $stmt->bindParam(':userId', $userId);
+        $stmt->bindParam(':friendId', $friendId);
+        $stmt->execute();
+    }
+
 
 }

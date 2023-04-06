@@ -143,8 +143,9 @@ class friendsController extends Controller
             $jwtValues = $token->data;
 
             $this->service->removeFriendship($jwtValues->id, $friendId);
+            $this->service->removeAllMessages($jwtValues->id, $friendId);
 
-            $this->respond("Friendship removed");
+            $this->respond("Friendship removed and all messages deleted");
         } catch (Exception $e) {
             $this->respondWithError($e->getCode(), $e->getMessage());
         }

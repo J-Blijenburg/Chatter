@@ -52,6 +52,10 @@ class FriendsService
     public function removeFriendship($userId, $friendId){
         $this->repository->removeFriendship($userId, $friendId);
     }
+
+    public function removeAllMessages($userId, $friendId){
+        $this->repository->removeAllMessages($userId, $friendId);
+    }
 }
 
 ?>
