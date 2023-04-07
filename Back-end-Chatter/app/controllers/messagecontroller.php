@@ -48,9 +48,9 @@ class MessageController extends Controller
 
             $message->fromUser = $jwtValues->id;
 
-            
-
             $message = $this->service->insert($message);
+
+            $this->service->updateLastMessageId($message);
 
             $this->respond($message);
         } catch (Exception $e) {

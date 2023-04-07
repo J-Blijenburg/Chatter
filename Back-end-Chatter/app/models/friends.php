@@ -4,9 +4,10 @@ namespace Models;
 class Friends {
 
     public int $id;
-    public int $firstUser;
-    public int $secondUser;
+    public User $firstUser;
+    public User $secondUser;
     public int $activeChat;
+    public int $lastMessageId;
 }
 
 ?>

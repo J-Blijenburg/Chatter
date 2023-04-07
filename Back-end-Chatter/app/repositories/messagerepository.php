@@ -9,7 +9,8 @@ use Models\Message;
 
 class MessageRepository extends Repository
 {
-    public function getMessagesById($currentUserId, $friendId) {
+    public function getMessagesById($currentUserId, $friendId)
+    {
         try {
             $stmt = $this->connection->prepare("SELECT fromUser, textMessage FROM messages WHERE (fromUser = :currentUserId AND toUser = :friendId) OR (fromUser = :friendId AND toUser = :currentUserId)");
             $stmt->bindParam(':currentUserId', $currentUserId);
@@ -30,14 +31,20 @@ class MessageRepository extends Repository
             $stmt = $this->connection->prepare("INSERT into messages (fromUser, toUser, textMessage, sendAt) VALUES (?,?,?,?)");
 
             $stmt->execute([$message->fromUser, $message->toUser, $message->textMessage, $message->sendAt]);
-
-
             $message->id = $this->connection->lastInsertId();
 
             return $this->getOne($message->id);
         } catch (PDOException $e) {
             echo $e;
         }
+    }
+
+    function updateLastMessageId($message)
+    {
+        $stmt = $this->connection->prepare("UPDATE `friends` SET `lastMessageId` = :messageId WHERE (firstUser = :firstUser AND secondUser = :secondUser) OR (firstUser = :secondUser AND secondUser = :firstUser);");
+        $stmt->bindParam(':messageId', $message->id);
+        $stmt->bindParam(':firstUser', $message->fromUser);
+        $stmt->bindParam(':secondUser', $message->toUser);
     }
     function getOne($id)
     {
@@ -56,7 +63,8 @@ class MessageRepository extends Repository
             echo $e;
         }
     }
-    function rowToUser($row) {
+    function rowToUser($row)
+    {
         $message = new Message();
         $message->id = $row['id'];
         $message->fromUser = $row['fromUser'];
@@ -67,6 +75,6 @@ class MessageRepository extends Repository
         return $message;
     }
 
-   
-    
+
+
 }

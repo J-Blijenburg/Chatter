@@ -18,6 +18,10 @@ class MessageService {
     public function insert($message) {       
         return $this->repository->insert($message);        
     }
+
+    public function updateLastMessageId($message){
+        $this->repository->updateLastMessageId($message);
+    }
     
 }
 
