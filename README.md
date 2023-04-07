@@ -5,6 +5,8 @@ The github repo: https://github.com/J-Blijenburg/Chatter
 
 You can log in with the following users:
 
+Username: Jens - Password: 123
+
 Username: Mario - Password: 123
 
 Username: Luigi - Password: 123
