@@ -11,32 +11,24 @@ class MessageRepository extends Repository
 {
     public function getMessagesById($currentUserId, $friendId)
     {
-        try {
-            $stmt = $this->connection->prepare("SELECT fromUser, textMessage, sendAt FROM messages WHERE (fromUser = :currentUserId AND toUser = :friendId) OR (fromUser = :friendId AND toUser = :currentUserId)");
-            $stmt->bindParam(':currentUserId', $currentUserId);
-            $stmt->bindParam(':friendId', $friendId);
-            $stmt->execute();
+        $stmt = $this->connection->prepare("SELECT fromUser, textMessage, sendAt FROM messages WHERE (fromUser = :currentUserId AND toUser = :friendId) OR (fromUser = :friendId AND toUser = :currentUserId)");
+        $stmt->bindParam(':currentUserId', $currentUserId);
+        $stmt->bindParam(':friendId', $friendId);
+        $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Message');
-            $messages = $stmt->fetchAll();
-            return $messages;
-        } catch (PDOException $e) {
-            echo $e;
-        }
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Message');
+        $messages = $stmt->fetchAll();
+        return $messages;
     }
 
     function insert($message)
     {
-        try {
-            $stmt = $this->connection->prepare("INSERT into messages (fromUser, toUser, textMessage, sendAt) VALUES (?,?,?,?)");
+        $stmt = $this->connection->prepare("INSERT into messages (fromUser, toUser, textMessage, sendAt) VALUES (?,?,?,?)");
 
-            $stmt->execute([$message->fromUser, $message->toUser, $message->textMessage, $message->sendAt]);
-            $message->id = $this->connection->lastInsertId();
+        $stmt->execute([$message->fromUser, $message->toUser, $message->textMessage, $message->sendAt]);
+        $message->id = $this->connection->lastInsertId();
 
-            return $this->getOne($message->id);
-        } catch (PDOException $e) {
-            echo $e;
-        }
+        return $this->getOne($message->id);
     }
 
     function updateLastMessageId($message)
@@ -48,20 +40,16 @@ class MessageRepository extends Repository
     }
     function getOne($id)
     {
-        try {
-            $query = "SELECT id, fromUser, toUser, textMessage, sendAt FROM messages WHERE id = :id";
-            $stmt = $this->connection->prepare($query);
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
+        $query = "SELECT id, fromUser, toUser, textMessage, sendAt FROM messages WHERE id = :id";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $row = $stmt->fetch();
-            $user = $this->rowToUser($row);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch();
+        $user = $this->rowToUser($row);
 
-            return $user;
-        } catch (PDOException $e) {
-            echo $e;
-        }
+        return $user;
     }
     function rowToUser($row)
     {

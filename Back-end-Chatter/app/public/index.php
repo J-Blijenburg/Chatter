@@ -14,34 +14,27 @@ $router = new \Bramus\Router\Router();
 $router->setNamespace('Controllers');
 
 // routes for the users endpoint
-$router->post('/users/login', 'UserController@login'); //compleet
-$router->post('/users/register', 'UserController@register'); //compleet
-$router->get('/users/getOneUser', 'UserController@getOneUser'); //compleet
-$router->delete('/users/removeUser', 'UserController@delete'); //compleet
-$router->put('/users/updateUsername', 'UserController@updateUsername'); //compleet
-$router->put('/users/updateEmail', 'UserController@updateEmail'); //compleet
-$router->put('/users/updatePassword', 'UserController@updatePassword'); //compleet
-$router->get('/users/getProfileImage', 'UserController@getProfileImage'); //compleet
-$router->post('/users/uploadImage', 'UserController@uploadImage'); //compleet
+$router->post('/users/login', 'UserController@login'); 
+$router->post('/users/register', 'UserController@register'); 
+$router->get('/users/getOneUser', 'UserController@getOneUser'); 
+$router->delete('/users/removeUser', 'UserController@delete'); 
+$router->put('/users/updateUsername', 'UserController@updateUsername'); 
+$router->put('/users/updateEmail', 'UserController@updateEmail'); 
+$router->put('/users/updatePassword', 'UserController@updatePassword'); 
+$router->get('/users/getProfileImage', 'UserController@getProfileImage'); 
+$router->post('/users/uploadImage', 'UserController@uploadImage'); 
 
 // routes for the friends endpoint
-$router->get('/friends/getFriendsByUserId', 'FriendsController@getFriendsByUserId'); //compleet
-$router->get('/friends/getChattableFriends', 'FriendsController@getChattableFriends'); //compleet
-
-$router->get('friends/getProfileImagesByFriendId/(\d+)', 'FriendsController@getProfileImagesByFriendId');
-
-$router->put('/friends/startChat/(\d+)', 'FriendsController@updateFriendsChatStatus');
-
+$router->get('/friends/getFriendsByUserId', 'FriendsController@getFriendsByUserId'); 
+$router->get('/friends/getChattableFriends', 'FriendsController@getChattableFriends');
+$router->get('friends/getProfileImagesByFriendId/(\d+)', 'FriendsController@getProfileImagesByFriendId'); 
+$router->put('/friends/startChat/(\d+)', 'FriendsController@startChat'); 
 $router->post('/friends/addFriend/([a-zA-Z]+)', 'FriendsController@addFriend');
-
-$router->post('/friends/addRandomUser', 'FriendsController@addRandomUser');
-
-$router->delete('/friends/removeFriendship/(\d+)', 'FriendsController@removeFriendship');
-
+$router->post('/friends/addRandomUser', 'FriendsController@addRandomUser'); 
+$router->delete('/friends/removeFriendship/(\d+)', 'FriendsController@removeFriendship'); 
 
 //routes for the messages endpoint
-$router->get('/messages/getMessagesById/(\d+)', 'MessageController@getMessagesById');
-
+$router->get('/messages/getMessagesById/(\d+)', 'MessageController@getMessagesById'); 
 $router->post('/messages/createMessage', 'MessageController@createMessage');
 
 // Run it!

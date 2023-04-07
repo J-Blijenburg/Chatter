@@ -39,15 +39,10 @@ class FriendsRepository extends Repository
 
     public function update($firstUser, $secondUser)
     {
-        try {
-            $stmt = $this->connection->prepare("UPDATE friends SET activeChat = 1 WHERE (firstUser = :firstUser AND secondUser = :secondUser) OR (firstUser = :secondUser AND secondUser = :firstUser)");
-            $stmt->bindParam(':firstUser', $firstUser);
-            $stmt->bindParam(':secondUser', $secondUser);
-            $stmt->execute();
-
-        } catch (PDOException $e) {
-            echo $e;
-        }
+        $stmt = $this->connection->prepare("UPDATE friends SET activeChat = 1 WHERE (firstUser = :firstUser AND secondUser = :secondUser) OR (firstUser = :secondUser AND secondUser = :firstUser)");
+        $stmt->bindParam(':firstUser', $firstUser);
+        $stmt->bindParam(':secondUser', $secondUser);
+        $stmt->execute();
     }
 
     function insert($firstUser, $secondUser)
@@ -67,28 +62,22 @@ class FriendsRepository extends Repository
 
     function insertRandomFriendship($userId)
     {
-        try {
-            $stmt = $this->connection->prepare("INSERT into friends (firstUser, secondUser, activeChat) VALUES (:firstUser,:secondUser,0)");
-            $stmt->bindParam(':firstUser', $userId);
+        $stmt = $this->connection->prepare("INSERT into friends (firstUser, secondUser, activeChat) VALUES (:firstUser,:secondUser,0)");
+        $stmt->bindParam(':firstUser', $userId);
 
-            $randomUserId = $this->getRandomUserId($userId);
+        $randomUserId = $this->getRandomUserId($userId);
 
-            $stmt->bindParam(':secondUser', $randomUserId);
-            $stmt->execute();
+        $stmt->bindParam(':secondUser', $randomUserId);
+        $stmt->execute();
 
-            $friendsId = $this->connection->lastInsertId();
+        $friendsId = $this->connection->lastInsertId();
 
-            return $this->getOne($friendsId);
-
-        } catch (PDOException $e) {
-            echo $e;
-        }
+        return $this->getOne($friendsId);
     }
 
     private function getRandomUserId($userId)
     {
-        try {
-            $stmt = $this->connection->prepare("SELECT id FROM users
+        $stmt = $this->connection->prepare("SELECT id FROM users
             WHERE id <> :id
             AND NOT EXISTS (
                 SELECT * FROM friends
@@ -96,15 +85,18 @@ class FriendsRepository extends Repository
                 OR (secondUser = :id AND firstUser = users.id)
             )
             ORDER BY RAND() LIMIT 1");
-            $stmt->bindParam(':id', $userId);
-            $stmt->execute();
+        $stmt->bindParam(':id', $userId);
+        $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $row = $stmt->fetch();
-            return $row['id'];
-        } catch (PDOException $e) {
-            echo $e;
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch();
+
+        if ($stmt->rowCount() == 0) {
+            throw new PDOException("No more user available", 404);
         }
+
+
+        return $row['id'];
     }
 
     function getOne($id)
@@ -136,31 +128,27 @@ class FriendsRepository extends Repository
 
     public function getFriendIdByUsername($friendUsername)
     {
-        try {
-            $stmt = $this->connection->prepare("SELECT id FROM users WHERE username = :username");
-            $stmt->bindParam(':username', $friendUsername);
-            $stmt->execute();
+        $stmt = $this->connection->prepare("SELECT id FROM users WHERE username = :username");
+        $stmt->bindParam(':username', $friendUsername);
+        $stmt->execute();
 
-            $row = $stmt->fetch();
-            return $row['id'];
-        } catch (PDOException $e) {
-            echo $e;
+        $row = $stmt->fetch();
+
+        if ($stmt->rowCount() == 0) {
+            throw new PDOException("No user with that username", 404);
         }
+        return $row['id'];
     }
 
     public function getProfileImagesByFriendId($friendId)
     {
-        try {
-            $stmt = $this->connection->prepare("SELECT IM.images FROM `users` AS US JOIN images AS IM ON US.imageId = IM.id WHERE US.id = :id");
-            $stmt->bindParam(':id', $friendId);
-            $stmt->execute();
-            $image = $stmt->fetch();
+        $stmt = $this->connection->prepare("SELECT IM.images FROM `users` AS US JOIN images AS IM ON US.imageId = IM.id WHERE US.id = :id");
+        $stmt->bindParam(':id', $friendId);
+        $stmt->execute();
+        $image = $stmt->fetch();
 
-            $extraImage = "data:image/jpeg;base64," . base64_encode($image['images']);
-            return $extraImage;
-        } catch (PDOException $e) {
-            echo $e;
-        }
+        $extraImage = "data:image/jpeg;base64," . base64_encode($image['images']);
+        return $extraImage;
     }
 
     //remove every thing between the two users, so that they are not friends anymore

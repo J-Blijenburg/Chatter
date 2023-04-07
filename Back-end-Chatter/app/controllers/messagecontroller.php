@@ -20,26 +20,24 @@ class MessageController extends Controller
         try {
             // Checks for a valid jwt, returns 401 if none is found
             $token = $this->checkForJwt();
-            if (!$token)
-                return;
-
+        
             // Extract and return the values from the decoded JWT token
             $jwtValues = $token->data;
 
             $messages = $this->service->getMessagesById($jwtValues->id, $friendId);
+
+            $this->respond($messages);
         } catch (Exception $e) {
-            $this->respondWithError(500, $e->getMessage());
+            $this->respondWithError($e->getCode(), $e->getMessage());
         }
 
-        $this->respond($messages);
+        
     }
 
     public function createMessage(){
         try{
             // Checks for a valid jwt, returns 401 if none is found
             $token = $this->checkForJwt();
-            if (!$token)
-                return;
 
             // Extract and return the values from the decoded JWT token
             $jwtValues = $token->data;
@@ -54,7 +52,7 @@ class MessageController extends Controller
 
             $this->respond($message);
         } catch (Exception $e) {
-            $this->respondWithError(500, $e->getMessage());
+            $this->respondWithError($e->getCode(), $e->getMessage());
         }
 
     }
