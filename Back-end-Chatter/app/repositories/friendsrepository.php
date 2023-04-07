@@ -11,38 +11,30 @@ class FriendsRepository extends Repository
 {
     public function getFriendsByUserId($id)
     {
-        try {
-            $stmt = $this->connection->prepare("SELECT US.id, US.username, US.email 
+        $stmt = $this->connection->prepare("SELECT US.id, US.username, US.email 
             FROM friends AS FR 
             JOIN users AS US ON FR.firstUser = US.id OR FR.secondUser = US.id
             WHERE (FR.firstUser = :id OR FR.secondUser = :id) AND US.id <> :id");
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\User');
-            $friends = $stmt->fetchAll();
-            return $friends;
-        } catch (PDOException $e) {
-            echo $e;
-        }
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\User');
+        $friends = $stmt->fetchAll();
+        return $friends;
     }
 
-    public function getChatFriendsByUserId($userId)
+    public function getChattableFriends($userId)
     {
-        try {
-            $stmt = $this->connection->prepare("SELECT US.id, US.username, US.email 
+        $stmt = $this->connection->prepare("SELECT US.id, US.username, US.email 
             FROM friends AS FR 
             JOIN users AS US ON FR.firstUser = US.id OR FR.secondUser = US.id
             WHERE (FR.firstUser = :id OR FR.secondUser = :id) AND US.id <> :id AND FR.activeChat = 1");
-            $stmt->bindParam(':id', $userId);
-            $stmt->execute();
+        $stmt->bindParam(':id', $userId);
+        $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\\User');
-            $friends = $stmt->fetchAll();
-            return $friends;
-        } catch (PDOException $e) {
-            echo $e;
-        }
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\\User');
+        $friends = $stmt->fetchAll();
+        return $friends;
     }
 
     public function update($firstUser, $secondUser)
@@ -83,7 +75,7 @@ class FriendsRepository extends Repository
 
             $stmt->bindParam(':secondUser', $randomUserId);
             $stmt->execute();
-            
+
             $friendsId = $this->connection->lastInsertId();
 
             return $this->getOne($friendsId);
@@ -142,7 +134,8 @@ class FriendsRepository extends Repository
         return $friends;
     }
 
-    public function getFriendIdByUsername($friendUsername){
+    public function getFriendIdByUsername($friendUsername)
+    {
         try {
             $stmt = $this->connection->prepare("SELECT id FROM users WHERE username = :username");
             $stmt->bindParam(':username', $friendUsername);
@@ -155,7 +148,8 @@ class FriendsRepository extends Repository
         }
     }
 
-    public function getProfileImagesByFriendId($friendId){
+    public function getProfileImagesByFriendId($friendId)
+    {
         try {
             $stmt = $this->connection->prepare("SELECT IM.images FROM `users` AS US JOIN images AS IM ON US.imageId = IM.id WHERE US.id = :id");
             $stmt->bindParam(':id', $friendId);
@@ -170,14 +164,16 @@ class FriendsRepository extends Repository
     }
 
     //remove every thing between the two users, so that they are not friends anymore
-    public function removeFriendship($userId, $friendId){
-       $stmt = $this->connection->prepare("DELETE FROM friends WHERE (firstUser = :userId AND secondUser = :friendId) OR (firstUser = :friendId AND secondUser = :userId)");
-       $stmt->bindParam(':userId', $userId);
-       $stmt->bindParam(':friendId', $friendId);
-       $stmt->execute();
+    public function removeFriendship($userId, $friendId)
+    {
+        $stmt = $this->connection->prepare("DELETE FROM friends WHERE (firstUser = :userId AND secondUser = :friendId) OR (firstUser = :friendId AND secondUser = :userId)");
+        $stmt->bindParam(':userId', $userId);
+        $stmt->bindParam(':friendId', $friendId);
+        $stmt->execute();
     }
 
-    public function removeAllMessages($userId, $friendId){
+    public function removeAllMessages($userId, $friendId)
+    {
         $stmt = $this->connection->prepare("DELETE FROM messages WHERE (fromUser = :userId AND toUser = :friendId) OR (fromUser = :friendId AND toUser = :userId)");
         $stmt->bindParam(':userId', $userId);
         $stmt->bindParam(':friendId', $friendId);

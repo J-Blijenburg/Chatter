@@ -169,7 +169,7 @@ export default {
             this.file = document.getElementById('file').files[0];
             let formData = new FormData();
             formData.append('file', this.file);
-            axios.post('http://localhost/images/uploadImage', formData, {
+            axios.post('http://localhost/users/uploadImage', formData, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                     'Content-Type': 'multipart/form-data'

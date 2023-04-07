@@ -37,8 +37,6 @@ export default {
                 })
                 .catch((error) => {
                     document.getElementById("errorMessage").innerHTML = error.response.data.errorMessage;
-
-                    console.log(error)
                 }
                 );
         },

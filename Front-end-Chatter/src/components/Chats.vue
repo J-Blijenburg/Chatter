@@ -104,7 +104,7 @@ export default {
     },
     methods: {
         getFriends() {
-            axios.get("http://localhost/friends/getChatFriendsByUserId", {
+            axios.get("http://localhost/friends/getChattableFriends", {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 }

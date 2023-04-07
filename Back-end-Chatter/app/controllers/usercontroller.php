@@ -17,41 +17,6 @@ class UserController extends Controller
         $this->service = new UserService();
     }
 
-    public function create()
-    {
-        try {
-            $user = $this->createObjectFromPostedJson("Models\\User");
-            $this->checkInput($user);
-            $user = $this->service->insert($user);
-            $this->respond($user);
-        } catch (Exception $e) {
-            $this->respondWithError($e->getCode(), $e->getMessage());
-        }
-
-
-    }
-
-    public function login()
-    {
-
-        // read user data from request body
-        $postedUser = $this->createObjectFromPostedJson("Models\\User");
-
-        // get user from db
-        $user = $this->service->checkUsernamePassword($postedUser->username, $postedUser->password);
-
-        // if the method returned false, the username and/or password were incorrect
-        if (!$user) {
-            $this->respondWithError(401, "Invalid login");
-            return;
-        }
-
-        // generate jwt
-        $tokenResponse = $this->generateJwt($user);
-
-        $this->respond($tokenResponse);
-    }
-
     public function generateJwt($user)
     {
         $secret_key = "YOUR_SECRET_KEY";
@@ -91,127 +56,127 @@ class UserController extends Controller
             );
     }
 
-    //get all the users there are
-    public function getAll()
+    public function login()
     {
-        // Checks for a valid jwt, returns 401 if none is found
-        $token = $this->checkForJwt();
-        if (!$token)
-            return;
+        try {
+            // Read the username and password from the body
+            $postedUser = $this->createObjectFromPostedJson("Models\\User");
 
-        $offset = NULL;
-        $limit = NULL;
+            // check if the username and password are correct
+            $user = $this->service->checkUsernamePassword($postedUser->username, $postedUser->password);
 
+            // generate jwt for the user
+            $tokenResponse = $this->generateJwt($user);
 
-        if (isset($_GET["offset"]) && is_numeric($_GET["offset"])) {
-            $offset = $_GET["offset"];
+            //respond with the created token and the user
+            $this->respond($tokenResponse);
+        } catch (Exception $e) {
+            $this->respondWithError($e->getCode(), $e->getMessage());
         }
-        if (isset($_GET["limit"]) && is_numeric($_GET["limit"])) {
-            $limit = $_GET["limit"];
-        }
-
-        $users = $this->service->getAll($offset, $limit);
-
-        $this->respond($users);
     }
 
-    //get a single user
-    public function getOne($id)
+    public function register()
     {
-        $user = $this->service->getOne($id);
+        try {
+            //Read the username, password and email from the body
+            $user = $this->createObjectFromPostedJson("Models\\User");
 
-        // we might need some kind of error checking that returns a 404 if the product is not found in the DB
-        if (!$user) {
-            $this->respondWithError(404, "User not found");
-            return;
+            //if the input is empty throw an error
+            $this->checkInput($user);
+
+            //insert the user in the database
+            $user = $this->service->insert($user);
+
+            $this->respond($user);
+        } catch (Exception $e) {
+            $this->respondWithError($e->getCode(), $e->getMessage());
         }
-
-        $this->respond($user);
     }
 
-
+    public function checkInput($input)
+    {
+        //check if input is not empty
+        if (empty($input)) {
+            throw new Exception("Input is empty", 400);
+        }
+    }
 
     public function getOneUser()
     {
-        // Checks for a valid jwt, returns 401 if none is found
-        $token = $this->checkForJwt();
-        if (!$token)
-            return;
+        try {
+            // Checks for a valid jwt, returns 401 if none is found
+            $token = $this->checkForJwt();
 
-        // Extract and return the values from the decoded JWT token
-        $jwtValues = $token->data;
+            // Extract and return the values from the decoded JWT token
+            $jwtValues = $token->data;
 
-        // Get the user with the id from the JWT
-        $user = $this->service->getOne($jwtValues->id);
+            // Get the user with the id from the JWT
+            $user = $this->service->getOne($jwtValues->id);
 
-        if (!$user) {
-            $this->respondWithError(404, "User not found");
-            return;
+            $this->respond($user);
+        } catch (Exception $e) {
+            $this->respondWithError($e->getCode(), $e->getMessage());
         }
-
-        $this->respond($user);
     }
 
     public function delete()
     {
-        // Checks for a valid jwt, returns 401 if none is found
-        $token = $this->checkForJwt();
-        if (!$token)
-            return;
+        try {
+            // Checks for a valid jwt, returns 401 if none is found
+            $token = $this->checkForJwt();
 
-        // Extract and return the values from the decoded JWT token
-        $jwtValues = $token->data;
+            // Extract and return the values from the decoded JWT token
+            $jwtValues = $token->data;
 
-        $this->service->delete($jwtValues->id);
-        return $this->respond("User deleted");
+            $this->service->delete($jwtValues->id);
+            $this->respond("User deleted");
+
+        } catch (Exception $e) {
+            $this->respondWithError($e->getCode(), $e->getMessage());
+        }
     }
 
-    //update the username of the user
+
     public function updateUsername()
     {
+        //update the username of the user
         try {
+            //get the username and id from the body
             $user = $this->createObjectFromPostedJson("Models\\User");
             $this->checkInput($user->username);
             $this->service->updateUsername($user);
-            $this->respond("User updated");
+            $this->respond("Username updated");
         } catch (Exception $e) {
             $this->respondWithError($e->getCode(), $e->getMessage());
         }
     }
     public function updateEmail()
     {
+        //update the email of the user
         try {
+            //get the email and id from the body
             $user = $this->createObjectFromPostedJson("Models\\User");
             $this->checkInput($user->email);
             $this->service->updateEmail($user);
-            $this->respond("User updated");
+            $this->respond("Email updated");
         } catch (Exception $e) {
             $this->respondWithError($e->getCode(), $e->getMessage());
         }
     }
-
-
 
     public function updatePassword()
     {
+        //update the password of the user
         try {
+            //get the password and id from the body
             $user = $this->createObjectFromPostedJson("Models\\User");
             $this->checkInput($user->password);
             $this->service->updatePassword($user);
-            $this->respond("User updated");
+            $this->respond("Password updated");
         } catch (Exception $e) {
             $this->respondWithError($e->getCode(), $e->getMessage());
         }
     }
-
-    //check if input is not empty
-    public function checkInput($input)
-    {
-        if (empty($input)) {
-            throw new Exception("Input is empty", 400);
-        }
-    }
-
 
     //return the profile image of the user
     public function getProfileImage()
@@ -219,8 +184,6 @@ class UserController extends Controller
         try {
             //Checks for a valid jwt, returns 401 if none is found
             $token = $this->checkForJwt();
-            if (!$token)
-                return;
 
             $jwtValues = $token->data;
 
@@ -232,61 +195,48 @@ class UserController extends Controller
         }
     }
 
-
-    public function updateProfileImage()
+    public function uploadImage()
     {
+        //upload a image to the database
         try {
-            // Checks for a valid jwt, returns 401 if none is found
+            header('Access-Control-Allow-Origin: *');
 
-            $image = $this->createObjectFromPostedFile("Models\\Image", 'image');
+            //check if there is a file
+            $this->checkForFile();
 
-            if ($image == null) {
-                $this->respondWithError(500, "No image found");
-            } else {
-                // $encodedImage = base64_encode($image);
+            //check if the file is valid
+            $this->checkValidFile();
 
-                // $this->service->updateProfileImage($encodedImage, $jwtValues->id);
+            $fileContent = file_get_contents($_FILES['file']['tmp_name']);
 
-                $this->respond('Profile image updated successfully');
-            }
+            $token = $this->checkForJwt();
+            $jwtValues = $token->data;
+
+            //upload the image to the database
+            $imageId = $this->service->uploadImage($fileContent);
+
+            //update the imageId of the user
+            $this->service->updateProfileImage($imageId, $jwtValues->id);
+
+            $this->respond("Image is succesfully uploaded with the id of $imageId");
         } catch (Exception $e) {
-            $this->respondWithError(500, $e->getMessage());
+            $this->respondWithError($e->getCode(), $e->getMessage());
         }
     }
 
-
-
-    public function uploadImage()
-    {
-        header('Access-Control-Allow-Origin: *');
-
+    private function checkForFile(){
         if (!isset($_FILES['file']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
-            $this->respondWithError(400, "No file uploaded");
-            return;
+            throw new Exception("No file uploaded", 400);
         }
+    }
 
+    private function checkValidFile(){
         $allowed = array('png', 'jpg', 'pdf', 'jpeg');
         $fileName = $_FILES['file']['name'];
         $ext = pathinfo($fileName, PATHINFO_EXTENSION);
         if (!in_array(strtolower($ext), $allowed)) {
-            $this->respondWithError(400, "File type not allowed");
-            return;
+            throw new Exception("File type not allowed", 400);
         }
-
-        // $targetFile = 'upload/' . basename();
-        $fileContent = file_get_contents($_FILES['file']['tmp_name']);
-
-        $imageId = $this->service->uploadImage($fileContent);
-
-        $token = $this->checkForJwt();
-        if (!$token)
-            return;
-
-        $jwtValues = $token->data;
-
-        $this->service->updateProfileImage($imageId, $jwtValues->id);
-
-        $this->respond('Profile image updated successfully');
     }
 
 

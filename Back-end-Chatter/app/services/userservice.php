@@ -16,15 +16,9 @@ class UserService {
         return $this->repository->checkUsernamePassword($username, $password);
     }
 
-    //insert into users to create a new user
     public function insert($user) {       
         return $this->repository->insert($user);        
     }
-
-    public function getAll($offset = NULL, $limit = NULL) {
-        return $this->repository->getAll($offset, $limit);
-    }
-
     public function getOne($id) {
         return $this->repository->getOne($id);
     }
@@ -43,11 +37,6 @@ class UserService {
 
     public function updatePassword($user) {
         $this->repository->updatePassword($user);
-    }
-
-  
-    public function setProfileImage($profileImage, $userId) {
-        $this->repository->setProfileImage($profileImage, $userId);
     }
 
     public function getProfileImage($userId){

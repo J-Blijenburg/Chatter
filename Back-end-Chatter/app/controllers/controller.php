@@ -8,16 +8,38 @@ use \Firebase\JWT\Key;
 
 class Controller
 {
+    //Read the given data from the body and return an object of the given class
+    function createObjectFromPostedJson($className)
+    {
+        $json = file_get_contents('php://input');
+        $data = json_decode($json);
+
+        $object = new $className();
+        foreach ($data as $key => $value) {
+            if (is_object($value)) {
+                continue;
+            }
+            $object->{$key} = $value;
+        }
+        return $object;
+    }
+
+
+
+
+
+    
+
     function checkForJwt()
     {
         // Check for token header
         if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
-            $this->respondWithError(401, "No token provided");
-            return;
+            throw new Exception("No token provided", 401);
         }
 
         // Read JWT from header
         $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
+        
         // Strip the part "Bearer " from the header
         $arr = explode(" ", $authHeader);
         $jwt = $arr[1];
@@ -28,12 +50,9 @@ class Controller
         if ($jwt) {
             try {
                 $decoded = JWT::decode($jwt, new Key($secret_key, 'HS256'));
-                // username is now found in
-                // echo $decoded->data->username;
                 return $decoded;
             } catch (Exception $e) {
-                $this->respondWithError(401, $e->getMessage());
-                return;
+                throw new Exception("Invalid token", 401);
             }
         }
     }
@@ -58,20 +77,7 @@ class Controller
         echo json_encode($data);
     }
 
-    function createObjectFromPostedJson($className)
-    {
-        $json = file_get_contents('php://input');
-        $data = json_decode($json);
-
-        $object = new $className();
-        foreach ($data as $key => $value) {
-            if (is_object($value)) {
-                continue;
-            }
-            $object->{$key} = $value;
-        }
-        return $object;
-    }
+    
 
     public function createObjectFromPostedFile($className, $fieldName)
     {

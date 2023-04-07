@@ -2,6 +2,7 @@
 
 namespace Repositories;
 
+use Exception;
 use PDO;
 use PDOException;
 use Repositories\Repository;
@@ -10,114 +11,104 @@ use Models\Images;
 
 class UserRepository extends Repository
 {
+    //check if the username and password are correct and return the user
     function checkUsernamePassword($username, $password)
     {
-        try {
-            // retrieve the user with the given username
-            $stmt = $this->connection->prepare("SELECT id, username, password, email, imageId FROM users WHERE username = :username");
-            $stmt->bindParam(':username', $username);
-            $stmt->execute();
+        // retrieve the user with the given username
+        $stmt = $this->connection->prepare("SELECT id, username, password, email, imageId FROM users WHERE username = :username");
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\User');
+        $user = $stmt->fetch();
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\User');
-            $user = $stmt->fetch();
-
-            if (!$user) {
-                // user not found
-                return false;
-            }
-
-            // verify if the password matches the hash in the database
-            $stmt = $this->connection->prepare("SELECT password FROM users WHERE id = :id");
-            $stmt->bindParam(':id', $user->id);
-            $stmt->execute();
-
-            $hash = $stmt->fetchColumn();
-            $result = $this->verifyPassword($password, $hash);
-
-            if (!$result) {
-                // password does not match
-                return false;
-            }
-
-            return $user;
-        } catch (PDOException $e) {
-            throw new Exception("Error checking username and password: " . $e->getMessage());
+        //if there is no user with the given username, return a exception
+        if (!$user) {
+            throw new Exception("Invalid username", 401);
         }
+
+        $this->verifyPassword($password, $user->password);
+
+        return $user;
     }
 
 
-
-    // verify the password hash
+    // verify the password hash with the given password
     function verifyPassword($input, $hash)
     {
-        return password_verify($input, $hash);
+        if (!password_verify($input, $hash)) {
+            throw new Exception("Invalid password", 401);
+        }
     }
 
+    //insert the given user into the database
     function insert($user)
     {
-        if (!($this->checkUsername($user->username))) {
-            throw new PDOException("Username already exists", 403);
-        } else if (!($this->checkEmail($user->email))) {
-            throw new PDOException("Email already exists", 403);
-        }
+        //check if the username or email already exists, if so throw an error
+        $this->checkUsername($user->username);
+        $this->checkEmail($user->email);
 
+        //inser the user into the table users and return the user
         $stmt = $this->connection->prepare("INSERT into users (username, password, email, imageId) VALUES (?,?,?,?)");
-
         $stmt->execute([$user->username, $this->hashPassword($user->password), $user->email, 1]);
-
         $user->id = $this->connection->lastInsertId();
 
+        //return the created user by first getting the user from the database by id
         return $this->getOne($user->id);
     }
 
     function checkUsername($username)
     {
+        //check every username there is in the database and return true if the username is not in the database
         $stmt = $this->connection->prepare("SELECT username FROM users WHERE username = :username");
         $stmt->bindParam(':username', $username);
         $stmt->execute();
-        if ($stmt->rowCount() == 0) {
-            return true;
+        if ($stmt->rowCount() != 0) {
+            throw new PDOException("Username already exists", 403);
         }
-        return false;
+        return true;
 
     }
 
     function checkEmail($email)
     {
+        //check every email there is in the database and return true if the email is not in the database
         $stmt = $this->connection->prepare("SELECT email FROM users WHERE email = :email");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
-        if ($stmt->rowCount() == 0) {
-            return true;
+        if ($stmt->rowCount() != 0) {
+            throw new PDOException("Email already exists", 403);
         }
-        return false;
+        return true;
 
     }
-
-    // hash the password (currently uses bcrypt)
+    
     function hashPassword($password)
     {
+        // hash the password (currently uses bcrypt)
         return password_hash($password, PASSWORD_DEFAULT);
     }
+
     function getOne($id)
     {
-        try {
-            $query = "SELECT id, username, password, email, imageId FROM users WHERE id = :id";
-            $stmt = $this->connection->prepare($query);
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
+        //get the user with the given id
+        $query = "SELECT id, username, password, email, imageId FROM users WHERE id = :id";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
 
-            $row = $stmt->fetch();
-            $user = $this->rowToUser($row);
+        $row = $stmt->fetch();
+        $user = $this->rowToUser($row);
 
-            return $user;
-        } catch (PDOException $e) {
-            echo $e;
+        if ($stmt->rowCount() == 0) { 
+            throw new PDOException("User not found", 404);
         }
+
+        return $user;
     }
 
     function rowToUser($row)
     {
+        //create a user object with the given row
         $user = new User();
         $user->id = $row['id'];
         $user->username = $row['username'];
@@ -127,40 +118,13 @@ class UserRepository extends Repository
         return $user;
     }
 
-    function getAll($offset = NULL, $limit = NULL)
-    {
-        try {
-            $query = "SELECT * FROM users";
-            if (isset($limit) && isset($offset)) {
-                $query .= " LIMIT :limit OFFSET :offset ";
-            }
-            $stmt = $this->connection->prepare($query);
-            if (isset($limit) && isset($offset)) {
-                $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-                $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-            }
-            $stmt->execute();
-
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\user');
-            $users = $stmt->fetchAll();
-
-            return $users;
-        } catch (PDOException $e) {
-            echo $e;
-        }
-    }
-
     function delete($userId)
     {
-        try {
-            $stmt = $this->connection->prepare("DELETE FROM friends WHERE firstUser = :id OR secondUser = :id;
-            DELETE FROM messages WHERE fromUser = :id OR toUser = :id;
-            DELETE FROM users WHERE id = :id;");
-            $stmt->bindParam(':id', $userId);
-            $stmt->execute();
-        } catch (PDOException $e) {
-            echo $e;
-        }
+        $stmt = $this->connection->prepare("DELETE FROM friends WHERE firstUser = :id OR secondUser = :id;
+        DELETE FROM messages WHERE fromUser = :id OR toUser = :id;
+        DELETE FROM users WHERE id = :id;");
+        $stmt->bindParam(':id', $userId);
+        $stmt->execute();
     }
 
     public function updateUsername($user)
@@ -203,23 +167,11 @@ class UserRepository extends Repository
     public function uploadImage($targetFile)
     {
         try {
-           
+
             $stmt = $this->connection->prepare("INSERT INTO images (images) VALUES (:image)");
             $stmt->bindParam(':image', $targetFile);
             $stmt->execute();
             return $this->connection->lastInsertId();
-        } catch (PDOException $e) {
-            echo $e;
-        }
-    }
-
-    public function setProfileImage($profileImage, $userId)
-    {
-        try {
-            $stmt = $this->connection->prepare("UPDATE users SET profileImage = :profileImage WHERE id = :id");
-            $stmt->bindParam(':id', $userId);
-            $stmt->bindParam(':profileImage', $profileImage);
-            $stmt->execute();
         } catch (PDOException $e) {
             echo $e;
         }

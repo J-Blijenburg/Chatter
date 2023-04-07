@@ -21,37 +21,34 @@ class friendsController extends Controller
         try {
             // Checks for a valid jwt, returns 401 if none is found
             $token = $this->checkForJwt();
-            if (!$token)
-                return;
-
+           
             // Extract and return the values from the decoded JWT token
             $jwtValues = $token->data;
 
             $friends = $this->service->getFriendsByUserId($jwtValues->id);
-        } catch (Exception $e) {
-            $this->respondWithError(500, $e->getMessage());
-        }
 
-        $this->respond($friends);
+            $this->respond($friends);
+        } catch (Exception $e) {
+            $this->respondWithError($e->getCode(), $e->getMessage());
+        }
     }
 
-    public function getChatFriendsByUserId()
+    public function getChattableFriends()
     {
         try {
             // Checks for a valid jwt, returns 401 if none is found
             $token = $this->checkForJwt();
-            if (!$token)
-                return;
 
             // Extract and return the values from the decoded JWT token
             $jwtValues = $token->data;
 
-            $friends = $this->service->getChatFriendsByUserId($jwtValues->id);
+            $friends = $this->service->getChattableFriends($jwtValues->id);
+            $this->respond($friends);
         } catch (Exception $e) {
-            $this->respondWithError(500, $e->getMessage());
+            $this->respondWithError($e->getCode(), $e->getMessage());
         }
 
-        $this->respond($friends);
+        
     }
 
     public function updateFriendsChatStatus($secondUser)
