@@ -165,7 +165,7 @@ export default {
                     console.log(err);
                 })
         },
-        uploadImage(){
+        uploadImage() {
             this.file = document.getElementById('file').files[0];
             let formData = new FormData();
             formData.append('file', this.file);
@@ -175,10 +175,10 @@ export default {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((res) => {
-                if(!res.data){
+                if (!res.data) {
                     alert('Something went wrong');
                 }
-                else{
+                else {
                     alert('Image uploaded');
                     this.getProfileImage();
                 }

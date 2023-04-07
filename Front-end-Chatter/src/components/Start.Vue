@@ -47,9 +47,9 @@ export default {
         },
       })
         .then((res) => {
-          this.user.username = res.data.data.username;
-          this.user.email = res.data.data.email;
-          this.user.id = res.data.data.id;
+          this.user.username = res.data.username;
+          this.user.email = res.data.email;
+          this.user.id = res.data.id;
         })
         .catch((error) => console.log(error));
     },

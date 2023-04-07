@@ -61,12 +61,11 @@ class UserController extends Controller
 
         $issuedAt = time(); // issued at
         $notbefore = $issuedAt; //not valid before 
-        $expire = $issuedAt + 600; // expiration time is set at +600 seconds (10 minutes)
 
-        // JWT expiration times should be kept short (10-30 minutes)
-        // A refresh token system should be implemented if we want clients to stay logged in for longer periods
 
-        // note how these claims are 3 characters long to keep the JWT as small as possible
+        //I have set the expiration time to 24 hours since i had no time to implement the refresh token.
+
+        $expire = $issuedAt + 60*60 *24; 
         $payload = array(
             "iss" => $issuer,
             "aud" => $audience,
