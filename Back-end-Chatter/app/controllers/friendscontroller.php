@@ -28,12 +28,11 @@ class friendsController extends Controller
             $jwtValues = $token->data;
 
             $friends = $this->service->getFriendsByUserId($jwtValues->id);
-            $this->respond($friends);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        
+        $this->respond($friends);
     }
 
     public function getChatFriendsByUserId()

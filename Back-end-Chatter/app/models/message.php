@@ -8,7 +8,6 @@ class Message {
     public int $toUser;
     public string $textMessage;
     public string $sendAt;
-    public int $read;
 
 }
 
