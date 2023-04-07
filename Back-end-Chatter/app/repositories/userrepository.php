@@ -203,9 +203,9 @@ class UserRepository extends Repository
     public function uploadImage($targetFile)
     {
         try {
-            $image = file_get_contents($targetFile);
+           
             $stmt = $this->connection->prepare("INSERT INTO images (images) VALUES (:image)");
-            $stmt->bindParam(':image', $image);
+            $stmt->bindParam(':image', $targetFile);
             $stmt->execute();
             return $this->connection->lastInsertId();
         } catch (PDOException $e) {

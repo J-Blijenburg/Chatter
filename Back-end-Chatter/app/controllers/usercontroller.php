@@ -65,7 +65,7 @@ class UserController extends Controller
 
         //I have set the expiration time to 24 hours since i had no time to implement the refresh token.
 
-        $expire = $issuedAt + 60*60 *24; 
+        $expire = $issuedAt + 60 * 60 * 24;
         $payload = array(
             "iss" => $issuer,
             "aud" => $audience,
@@ -190,7 +190,7 @@ class UserController extends Controller
         }
     }
 
-    
+
 
     public function updatePassword()
     {
@@ -209,7 +209,7 @@ class UserController extends Controller
     {
         if (empty($input)) {
             throw new Exception("Input is empty", 400);
-        }        
+        }
     }
 
 
@@ -273,29 +273,20 @@ class UserController extends Controller
             return;
         }
 
-        $targetFile = 'upload/' . basename($_FILES['file']['name']);
+        // $targetFile = 'upload/' . basename();
+        $fileContent = file_get_contents($_FILES['file']['tmp_name']);
 
-        if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
-            $imageId = $this->service->uploadImage($targetFile);
+        $imageId = $this->service->uploadImage($fileContent);
 
+        $token = $this->checkForJwt();
+        if (!$token)
+            return;
 
+        $jwtValues = $token->data;
 
-            $token = $this->checkForJwt();
-            if (!$token)
-                return;
+        $this->service->updateProfileImage($imageId, $jwtValues->id);
 
-            $jwtValues = $token->data;
-
-            $this->service->updateProfileImage($imageId, $jwtValues->id);
-
-            // refresh the JWT token with the new image id
-            $user = $this->service->getOne($jwtValues->id);
-            $tokenResponse = $this->generateJwt($user);
-
-            $this->respond($tokenResponse);
-        } else {
-            $this->respondWithError(500, "Failed to upload file");
-        }
+        $this->respond('Profile image updated successfully');
     }
 
 
