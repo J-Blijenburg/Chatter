@@ -3,6 +3,8 @@ A chatsystem using vue and docker
 
 The github repo: https://github.com/J-Blijenburg/Chatter
 
+You can download the database from the backend directory
+
 You can log in with the following users:
 
 Username: Jens - Password: 123
