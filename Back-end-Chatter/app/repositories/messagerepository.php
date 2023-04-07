@@ -12,7 +12,7 @@ class MessageRepository extends Repository
     public function getMessagesById($currentUserId, $friendId)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT fromUser, textMessage FROM messages WHERE (fromUser = :currentUserId AND toUser = :friendId) OR (fromUser = :friendId AND toUser = :currentUserId)");
+            $stmt = $this->connection->prepare("SELECT fromUser, textMessage, sendAt FROM messages WHERE (fromUser = :currentUserId AND toUser = :friendId) OR (fromUser = :friendId AND toUser = :currentUserId)");
             $stmt->bindParam(':currentUserId', $currentUserId);
             $stmt->bindParam(':friendId', $friendId);
             $stmt->execute();

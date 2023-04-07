@@ -12,6 +12,7 @@
     "bootstrap-icons": "^1.10.3",
     "bootstrap-icons-vue": "^1.10.3",
     "bootstrap-vue": "^2.23.1",
+    "date-fns": "^2.29.3",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
     "vue-axios": "^3.5.2",
