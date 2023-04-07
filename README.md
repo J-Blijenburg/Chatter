@@ -3,7 +3,7 @@ A chatsystem using vue and docker
 
 The github repo: https://github.com/J-Blijenburg/Chatter
 
-You can download the database from the backend directory
+You can use the database sql script from the backend directory
 
 You can log in with the following users:
 
