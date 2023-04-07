@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Gegenereerd op: 07 apr 2023 om 13:11
+-- Gegenereerd op: 07 apr 2023 om 13:17
 -- Serverversie: 10.11.2-MariaDB-1:10.11.2+maria~ubu2204
 -- PHP-versie: 8.1.17
 
@@ -31,17 +31,17 @@ CREATE TABLE `friends` (
   `id` int(50) NOT NULL,
   `firstUser` int(50) NOT NULL,
   `secondUser` int(50) NOT NULL,
-  `activeChat` tinyint(1) NOT NULL,
-  `lastMessageId` int(50) DEFAULT NULL
+  `activeChat` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `friends`
 --
 
-INSERT INTO `friends` (`id`, `firstUser`, `secondUser`, `activeChat`, `lastMessageId`) VALUES
-(67, 28, 29, 0, NULL),
-(68, 28, 24, 0, NULL);
+INSERT INTO `friends` (`id`, `firstUser`, `secondUser`, `activeChat`) VALUES
+(67, 28, 29, 1),
+(68, 28, 24, 0),
+(69, 28, 26, 0);
 
 -- --------------------------------------------------------
 
@@ -121,7 +121,8 @@ INSERT INTO `messages` (`id`, `fromUser`, `toUser`, `textMessage`, `sendAt`) VAL
 (102, 28, 24, 'dsadsadas', '2023-04-02 16:11:52'),
 (103, 28, 24, 'gdsafdsa', '2023-04-02 16:11:52'),
 (104, 24, 28, 'hallo?', '2023-04-02 16:11:52'),
-(105, 28, 24, 'Hoi', '2023-04-02 16:11:52');
+(105, 28, 24, 'Hoi', '2023-04-02 16:11:52'),
+(106, 28, 29, 'Hallo', '2023-04-02 16:11:52');
 
 -- --------------------------------------------------------
 
@@ -158,8 +159,7 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `imageId`) VALUES
 ALTER TABLE `friends`
   ADD PRIMARY KEY (`id`),
   ADD KEY `firstUser` (`firstUser`),
-  ADD KEY `secondUser` (`secondUser`),
-  ADD KEY `friends_ibfk_3` (`lastMessageId`);
+  ADD KEY `secondUser` (`secondUser`);
 
 --
 -- Indexen voor tabel `images`
@@ -190,7 +190,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT voor een tabel `friends`
 --
 ALTER TABLE `friends`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT voor een tabel `images`
@@ -202,7 +202,7 @@ ALTER TABLE `images`
 -- AUTO_INCREMENT voor een tabel `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT voor een tabel `users`
@@ -219,8 +219,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `friends`
   ADD CONSTRAINT `friends_ibfk_1` FOREIGN KEY (`firstUser`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `friends_ibfk_2` FOREIGN KEY (`secondUser`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `friends_ibfk_3` FOREIGN KEY (`lastMessageId`) REFERENCES `messages` (`id`);
+  ADD CONSTRAINT `friends_ibfk_2` FOREIGN KEY (`secondUser`) REFERENCES `users` (`id`);
 
 --
 -- Beperkingen voor tabel `messages`
