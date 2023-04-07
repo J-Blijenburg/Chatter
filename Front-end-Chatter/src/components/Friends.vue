@@ -88,7 +88,6 @@ export default {
                     Authorization: "Bearer " + localStorage.getItem("token")
                 }
             }).then((res) => {
-                alert("Friendship over ;(");
                 window.location.reload();
             })
                 .catch((err) => {

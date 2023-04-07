@@ -37,7 +37,6 @@ export default {
                 password: this.password,
             })
                 .then((res) => {
-                    alert(res.data.username + " has registered!");
                     this.$router.push("/");
                 })
                 .catch((error) => {

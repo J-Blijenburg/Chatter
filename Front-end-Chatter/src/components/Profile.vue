@@ -8,6 +8,7 @@
             <div class="baseProfileBody">
                 <div class="changeProfileSettings">
                     <div class="settingsAndProfileImage">
+
                         <div class="profileItemSettings">
                             <div class="layoutProfileSettings">
                                 <h6>Username</h6>
@@ -31,6 +32,12 @@
                                 </div>
                             </div>
                             <label id="errorMessage"></label>
+                            <p>
+                                Username: {{ user.username }}
+                                <br>
+                                Email: {{ user.email }}
+                            </p>
+
                         </div>
                         <div class="profileItemSettings" id="profilesetting">
                             <div class="profileImageContainer">
@@ -104,7 +111,6 @@ export default {
                 username: document.getElementById('txtUsername').value,
             })
                 .then((res) => {
-                    alert("Username is changed");
                     window.location.reload();
                 })
                 .catch((error) => {
@@ -118,7 +124,6 @@ export default {
                 email: document.getElementById('txtEmail').value,
             })
                 .then((res) => {
-                    alert("Email is changed");
                     window.location.reload();
                 })
                 .catch((error) => {
@@ -132,7 +137,6 @@ export default {
                 password: document.getElementById('txtPassword').value,
             })
                 .then((res) => {
-                    alert("Password is changed");
                     window.location.reload();
                 })
                 .catch((error) => {
@@ -179,7 +183,6 @@ export default {
                     alert('Something went wrong');
                 }
                 else {
-                    alert('Image uploaded');
                     this.getProfileImage();
                 }
             }).catch((err) => {
